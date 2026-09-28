@@ -26,6 +26,7 @@
 
 /* ---------- editorial (light) ---------- */
 body[data-design="editorial"] {
+  --dv-btn-fg: #ffffff;
   --dv-bg: #efece4;
   --dv-card: #fffefb;
   --dv-card-border: #e0dacc;
@@ -56,6 +57,7 @@ body[data-design="editorial"] {
 
 /* ---------- editorial (dark) ---------- */
 body[data-theme="dark"][data-design="editorial"] {
+  --dv-btn-fg: #14161a;
   --dv-bg: #14161a;
   --dv-card: #1c1f24;
   --dv-card-border: #2c3138;
@@ -74,6 +76,7 @@ body[data-theme="dark"][data-design="editorial"] {
 
 /* ---------- modern (light) ---------- */
 body[data-design="modern"] {
+  --dv-btn-fg: #ffffff;
   --dv-bg: #eef2f5;
   --dv-card: #ffffff;
   --dv-card-border: #e6ebf0;
@@ -104,6 +107,7 @@ body[data-design="modern"] {
 
 /* ---------- modern (dark) ---------- */
 body[data-theme="dark"][data-design="modern"] {
+  --dv-btn-fg: #08201a;
   --dv-bg: #0e1218;
   --dv-card: #171d25;
   --dv-card-border: #242c37;
@@ -123,6 +127,7 @@ body[data-theme="dark"][data-design="modern"] {
 
 /* ---------- minimal (light) ---------- */
 body[data-design="minimal"] {
+  --dv-btn-fg: #ffffff;
   --dv-bg: #fbfbfa;
   --dv-card: #ffffff;
   --dv-card-border: #ececea;
@@ -153,6 +158,7 @@ body[data-design="minimal"] {
 
 /* ---------- minimal (dark) ---------- */
 body[data-theme="dark"][data-design="minimal"] {
+  --dv-btn-fg: #101113;
   --dv-bg: #101113;
   --dv-card: #101113;
   --dv-card-border: #24262a;
@@ -190,11 +196,11 @@ body[data-design]:not([data-design="classic"]) h6 {
   color: var(--dv-heading);
 }
 
-body[data-design]:not([data-design="classic"]) a {
+body[data-design]:not([data-design="classic"]) a:not(:where(.btn)) {
   color: var(--dv-accent);
 }
 
-body[data-design]:not([data-design="classic"]) a:hover {
+body[data-design]:not([data-design="classic"]) a:not(:where(.btn)):hover {
   color: var(--dv-accent-strong);
 }
 
@@ -301,31 +307,34 @@ body[data-design]:not([data-design="classic"]) .credits ul li a:hover {
 }
 
 /* ---- Badges, buttons, bars, rules ---- */
-body[data-design]:not([data-design="classic"]) .badge-theme {
+body[data-design]:where(:not([data-design="classic"])) .badge-theme {
   background: var(--dv-accent);
   border-radius: var(--dv-badge-radius);
+  color: var(--dv-btn-fg);
   padding: 0.4em 0.75em;
   font-weight: 700;
   letter-spacing: 0.03em;
 }
 
-body[data-design]:not([data-design="classic"]) a.btn-cta-secondary,
-body[data-design]:not([data-design="classic"]) .btn-cta-secondary,
-body[data-design]:not([data-design="classic"]) a.btn-cta-primary,
-body[data-design]:not([data-design="classic"]) .btn-cta-primary {
+body[data-design]:where(:not([data-design="classic"])) a.btn-cta-secondary,
+body[data-design]:where(:not([data-design="classic"])) .btn-cta-secondary,
+body[data-design]:where(:not([data-design="classic"])) a.btn-cta-primary,
+body[data-design]:where(:not([data-design="classic"])) .btn-cta-primary {
   background: var(--dv-accent);
   border-color: var(--dv-accent);
   border-radius: var(--dv-badge-radius);
+  color: var(--dv-btn-fg);
   font-family: var(--dv-font-body);
   letter-spacing: 0.04em;
 }
 
-body[data-design]:not([data-design="classic"]) a.btn-cta-secondary:hover,
-body[data-design]:not([data-design="classic"]) .btn-cta-secondary:hover,
-body[data-design]:not([data-design="classic"]) a.btn-cta-primary:hover,
-body[data-design]:not([data-design="classic"]) .btn-cta-primary:hover {
+body[data-design]:where(:not([data-design="classic"])) a.btn-cta-secondary:hover,
+body[data-design]:where(:not([data-design="classic"])) .btn-cta-secondary:hover,
+body[data-design]:where(:not([data-design="classic"])) a.btn-cta-primary:hover,
+body[data-design]:where(:not([data-design="classic"])) .btn-cta-primary:hover {
   background: var(--dv-accent-strong);
   border-color: var(--dv-accent-strong);
+  color: var(--dv-btn-fg);
 }
 
 body[data-design]:not([data-design="classic"]) .skills .skillset .level-bar {
@@ -370,6 +379,11 @@ body[data-design]:not([data-design="classic"]) .latest .has-ribbon .ribbon .text
 
 body[data-design]:not([data-design="classic"]) .footer {
   background: var(--dv-footer-bg);
+}
+
+body[data-design]:not([data-design="classic"]) .footer a,
+body[data-design]:not([data-design="classic"]) .footer a:hover {
+  color: #fff;
 }
 
 body[data-design]:not([data-design="classic"]) .testimonials .item .quote {
@@ -418,7 +432,7 @@ body[data-design="editorial"] a.btn-cta-primary {
 body[data-design="editorial"] a.btn-cta-secondary:hover,
 body[data-design="editorial"] a.btn-cta-primary:hover {
   background: var(--dv-accent);
-  color: #fff;
+  color: var(--dv-btn-fg);
 }
 
 body[data-design="editorial"] .education .item .university {

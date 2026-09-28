@@ -17,6 +17,7 @@
 
   var LANGS = ["en", "ja"];
   var DESIGNS = ["classic", "editorial", "modern", "minimal"];
+  var DEFAULT_DESIGN = "modern";  // keep in sync with the boot snippet in index.html
 
   var TITLES = {
     en: "Shunsuke Yasuki (安木 駿介) - CV, Research Page",
@@ -46,7 +47,7 @@
 
   function applyDesign(design) {
     if (DESIGNS.indexOf(design) === -1) {
-      design = "classic";
+      design = DEFAULT_DESIGN;
     }
     document.body.setAttribute("data-design", design);
     syncGroup("data-set-design", design);
@@ -76,7 +77,7 @@
   function init() {
     // Re-apply from the DOM so the buttons match whatever the boot snippet set.
     applyLang(document.body.getAttribute("data-lang") || "en");
-    applyDesign(document.body.getAttribute("data-design") || "classic");
+    applyDesign(document.body.getAttribute("data-design") || DEFAULT_DESIGN);
 
     bind("data-set-lang", applyLang, "siteLang");
     bind("data-set-design", applyDesign, "siteDesign");

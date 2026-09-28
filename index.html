@@ -38,7 +38,7 @@
 
 </head> 
 
-<body data-lang="en" data-design="classic">
+<body data-lang="en" data-design="modern">
     <script>
     /* Applies the stored preferences before the first paint, so there is no flash
        of the wrong language, design or colour scheme. Keep this inline and first. */
@@ -47,8 +47,8 @@
       var get = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
       var lang = get('siteLang');
       if (lang !== 'en' && lang !== 'ja') { lang = 'en'; }
-      var design = get('siteDesign') || 'classic';
-      if (['classic', 'editorial', 'modern', 'minimal'].indexOf(design) === -1) { design = 'classic'; }
+      var design = get('siteDesign') || 'modern';
+      if (['classic', 'editorial', 'modern', 'minimal'].indexOf(design) === -1) { design = 'modern'; }
       b.setAttribute('data-lang', lang);
       b.setAttribute('data-design', design);
       document.documentElement.setAttribute('lang', lang);
@@ -98,9 +98,9 @@
 		                <div class="prefs-row">
 		                    <span class="prefs-label"><span data-i18n="en">Design</span><span data-i18n="ja">デザイン</span></span>
 		                    <div class="prefs-group" role="group" aria-label="Design">
-		                        <button type="button" class="prefs-btn" data-set-design="classic" aria-pressed="true">Classic</button>
+		                        <button type="button" class="prefs-btn" data-set-design="classic" aria-pressed="false">Classic</button>
 		                        <button type="button" class="prefs-btn" data-set-design="editorial" aria-pressed="false">Editorial</button>
-		                        <button type="button" class="prefs-btn" data-set-design="modern" aria-pressed="false">Modern</button>
+		                        <button type="button" class="prefs-btn is-active" data-set-design="modern" aria-pressed="true">Modern</button>
 		                        <button type="button" class="prefs-btn" data-set-design="minimal" aria-pressed="false">Minimal</button>
 		                    </div>
 		                </div><!--//prefs-row-->

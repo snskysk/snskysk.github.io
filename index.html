@@ -11,7 +11,10 @@
     <link rel="shortcut icon" href="favicon.ico">  
     
     <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'> 
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <!-- Japanese-capable faces: used by the JA view and by the design variants -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet"> 
     
     <!-- FontAwesome JS -->
     <script defer src="assets/fontawesome/js/all.js"></script>
@@ -28,9 +31,31 @@
     <!-- Theme CSS -->  
     <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
 
+    <!-- ADDITIVE LAYERS - see DESIGN.md. styles.css above is untouched; these two
+         files only add the language switch and the optional design variants. -->
+    <link rel="stylesheet" href="assets/css/site-prefs.css">
+    <link rel="stylesheet" href="assets/css/design-variants.css">
+
 </head> 
 
-<body>
+<body data-lang="en" data-design="classic">
+    <script>
+    /* Applies the stored preferences before the first paint, so there is no flash
+       of the wrong language, design or colour scheme. Keep this inline and first. */
+    (function () {
+      var b = document.body;
+      var get = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
+      var lang = get('siteLang');
+      if (lang !== 'en' && lang !== 'ja') { lang = 'en'; }
+      var design = get('siteDesign') || 'classic';
+      if (['classic', 'editorial', 'modern', 'minimal'].indexOf(design) === -1) { design = 'classic'; }
+      b.setAttribute('data-lang', lang);
+      b.setAttribute('data-design', design);
+      document.documentElement.setAttribute('lang', lang);
+      if (get('darkSwitch') === 'dark') { b.setAttribute('data-theme', 'dark'); }
+    })();
+    </script>
+
     <!-- ******HEADER****** --> 
     <header class="header">
         <div class="container">     
@@ -38,8 +63,8 @@
 			    <div class="col">         
 		            <img class="profile-image img-fluid float-start rounded-circle" src="assets/images/profile.png" alt="profile image" />
 		            <div class="profile-content">
-		                <h1 class="name">Shunsuke Yasuki  --  安木 駿介</h1>
-		                <h2 class="desc">Artificial Intelligence (Deep Learning) Researcher</h2>   
+		                <h1 class="name"><span data-i18n="en">Shunsuke Yasuki  --  安木 駿介</span><span data-i18n="ja">安木 駿介  --  Shunsuke Yasuki</span></h1>
+		                <h2 class="desc"><span data-i18n="en">Artificial Intelligence (Deep Learning) Researcher</span><span data-i18n="ja">人工知能（深層学習）研究者</span></h2>   
 		                <!-- <ul class="social list-inline">
 		                    <li class="list-inline-item"><a href="https://github.com/snskysk"><i class="fab fa-github-alt"></i></a></li>    
 		                    <li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
@@ -50,13 +75,37 @@
 		            </div><!--//profile-->
 			    </div><!--//col-->
 	            <div class="col-12 col-md-auto">
-		            <div class="dark-mode-switch d-flex">
-						<div class="form-check form-switch mx-auto mx-md-0">
-							<input type="checkbox" class="form-check-input me-2" id="darkSwitch" />
-							<label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+		            <div class="site-prefs">
 
-						</div>
-			        </div><!--//dark-mode-switch-->
+		                <div class="prefs-row">
+		                    <span class="prefs-label"><span data-i18n="en">Language</span><span data-i18n="ja">言語</span></span>
+		                    <div class="prefs-group" role="group" aria-label="Language">
+		                        <button type="button" class="prefs-btn" data-set-lang="en" aria-pressed="true">EN</button>
+		                        <button type="button" class="prefs-btn" data-set-lang="ja" aria-pressed="false">日本語</button>
+		                    </div>
+		                </div><!--//prefs-row-->
+
+		                <div class="prefs-row">
+		                    <div class="dark-mode-switch d-flex">
+		                        <div class="form-check form-switch mx-auto mx-md-0">
+		                            <input type="checkbox" class="form-check-input me-2" id="darkSwitch" />
+		                            <label class="custom-control-label" for="darkSwitch"><span data-i18n="en">Dark Mode</span><span data-i18n="ja">ダークモード</span></label>
+		                        </div>
+		                    </div><!--//dark-mode-switch-->
+		                </div><!--//prefs-row-->
+
+		                <!-- DESIGN PICKER - delete this whole .prefs-row once a design is chosen. -->
+		                <div class="prefs-row">
+		                    <span class="prefs-label"><span data-i18n="en">Design</span><span data-i18n="ja">デザイン</span></span>
+		                    <div class="prefs-group" role="group" aria-label="Design">
+		                        <button type="button" class="prefs-btn" data-set-design="classic" aria-pressed="true">Classic</button>
+		                        <button type="button" class="prefs-btn" data-set-design="editorial" aria-pressed="false">Editorial</button>
+		                        <button type="button" class="prefs-btn" data-set-design="modern" aria-pressed="false">Modern</button>
+		                        <button type="button" class="prefs-btn" data-set-design="minimal" aria-pressed="false">Minimal</button>
+		                    </div>
+		                </div><!--//prefs-row-->
+
+			        </div><!--//site-prefs-->
                     <!-- <a class="btn btn-cta-primary" href="https://themes.3rdwavemedia.com/" target="_blank"><i class="fas fa-paper-plane"></i> Contact Me</a>         -->
 	            </div><!--//col-->
 	        </div><!--//row-->         
@@ -70,9 +119,10 @@
             <div class="primary col-lg-8 col-12">
                 <section class="about section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Career Profile</h2>
+                        <h2 class="heading"><span data-i18n="en">Career Profile</span><span data-i18n="ja">経歴</span></h2>
                         <div class="content">
-                            <p>As for my academic career, during my undergraduate years, I deepened my knowledge and experience in Artificial Intelligence and Data Science alongside my Business Administration major. Later, I earned a master's degree in artificial intelligence, and in March 2026 I was awarded a Ph.D. in Artificial Intelligence Science by the Graduate School of Artificial Intelligence and Science, Rikkyo University. Since April 2026, I have been a Project Researcher at the Matsuo-Iwasawa Laboratory, Graduate School of Engineering, The University of Tokyo. I study how deep learning models work in the field of computer vision, and my papers have been accepted at the world's top international conferences, including CVPR, ICCV, and NeurIPS. I was also selected for the AIST KAKUSEI Project (FY2025), serve as a reviewer for NeurIPS, and have been an Operating Committee Member of JSAI (the Japanese Society for Artificial Intelligence) since 2025. As for my business career, in 2020, I joined a startup developing artificial intelligence services as a data scientist and became its CTO. In 2021 I went independent and started another artificial intelligence services company.</p>
+                            <p data-i18n="en">As for my academic career, during my undergraduate years, I deepened my knowledge and experience in Artificial Intelligence and Data Science alongside my Business Administration major. Later, I earned a master's degree in artificial intelligence, and in March 2026 I was awarded a Ph.D. in Artificial Intelligence Science by the Graduate School of Artificial Intelligence and Science, Rikkyo University. Since April 2026, I have been a Project Researcher at the Matsuo-Iwasawa Laboratory, Graduate School of Engineering, The University of Tokyo. I study how deep learning models work in the field of computer vision, and my papers have been accepted at the world's top international conferences, including CVPR, ICCV, and NeurIPS. I was also selected for the AIST KAKUSEI Project (FY2025), serve as a reviewer for NeurIPS, and have been an Operating Committee Member of JSAI (the Japanese Society for Artificial Intelligence) since 2025. As for my business career, in 2020, I joined a startup developing artificial intelligence services as a data scientist and became its CTO. In 2021 I went independent and started another artificial intelligence services company.</p>
+                            <p data-i18n="ja">学術面では、学部時代に経営学を専攻しながら、人工知能とデータサイエンスの知識と経験を深めました。その後、人工知能科学の修士号を取得し、2026年3月に立教大学大学院人工知能科学研究科より博士（人工知能科学）の学位を授与されました。2026年4月より、東京大学大学院工学系研究科 松尾・岩澤研究室の特任研究員を務めています。研究テーマはコンピュータビジョンにおける深層学習モデルの動作原理の解明で、CVPR・ICCV・NeurIPS といったトップ国際会議に論文が採択されています。また、令和7年度 産総研「覚醒」プロジェクトに採択され、NeurIPS の査読を担当、2025年からは人工知能学会（JSAI）の運営委員も務めています。ビジネス面では、2020年に人工知能サービスを開発するスタートアップにデータサイエンティストとして参画し、CTO に就任しました。2021年に独立し、別の人工知能サービス企業を立ち上げました。</p>
                          
                         </div><!--//content-->
                     </div><!--//section-inner-->                 
@@ -81,13 +131,14 @@
 
                 <section class="projects section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading"> INTERNATIONAL CONFERENCE (REFEREED)</h2>
+                        <h2 class="heading"><span data-i18n="en">INTERNATIONAL CONFERENCE (REFEREED)</span><span data-i18n="ja">国際会議（査読付き）</span></h2>
                         <div class="content">
                             <div class="item">
                                 <h3 class="title"><span class="badge badge-theme">CVPR2024</span> <a href="https://arxiv.org/abs/2403.06676" target="_blank">CAM Back Again: Large Kernel CNNs from a Weakly Supervised Object Localization Perspective</a></h3>
                                 <p class="summary">Shunsuke Yasuki, Masato Taki</p>
-                                <p class="summary">CVPR2024 (The IEEE/CVF Conference on Computer Vision and Pattern Recognition 2024)</p>
-                                <p><a class="more-link" href="https://arxiv.org/pdf/2403.06676" target="_blank"><i class="fas fa-external-link-alt"></i>Download PDF</a></p>
+                                <p class="summary" data-i18n="en">CVPR2024 (The IEEE/CVF Conference on Computer Vision and Pattern Recognition 2024)</p>
+                                <p class="summary" data-i18n="ja">CVPR2024（コンピュータビジョン・パターン認識会議 2024）</p>
+                                <p><a class="more-link" href="https://arxiv.org/pdf/2403.06676" target="_blank"><i class="fas fa-external-link-alt"></i><span data-i18n="en">Download PDF</span><span data-i18n="ja">PDF をダウンロード</span></a></p>
                             </div><!--//item-->
                             <!-- <div class="item">
                                 <h3 class="title"><a href="https://themes.3rdwavemedia.com/bootstrap-templates/startup/nova-bootstrap-landing-page-template-for-mobile-apps/" target="_blank">Nova - Free App Landing Page Template for App Developers</a> <span class="badge badge-theme">Free</span></h3>
@@ -95,7 +146,7 @@
                                 <p><a class="more-link" href="https://themes.3rdwavemedia.com/bootstrap-templates/startup/nova-bootstrap-landing-page-template-for-mobile-apps/" target="_blank"><i class="fas fa-external-link-alt"></i>Download Now</a></p>
                             </div> -->
                             
-                            <a class="btn btn-cta-secondary" href="https://github.com/snskysk/CAM-Back-Again" target="_blank">More on GitHub <i class="fas fa-chevron-right pt-1"></i></a>
+                            <a class="btn btn-cta-secondary" href="https://github.com/snskysk/CAM-Back-Again" target="_blank"><span data-i18n="en">More on GitHub</span><span data-i18n="ja">GitHub で詳細を見る</span> <i class="fas fa-chevron-right pt-1"></i></a>
                             
                         </div><!--//content-->  
 
@@ -103,23 +154,25 @@
                             <div class="item">
                                 <h3 class="title"><span class="badge badge-theme">ICCV2025</span> <a href="https://arxiv.org/abs/2506.23352" target="_blank">GeoProg3D: Compositional Visual Reasoning for City-Scale 3D Language Fields</a></h3>
                                 <p class="summary">Shunsuke Yasuki, Taiki Miyanishi, Nakamasa Inoue, Shuhei Kurita, Koya Sakamoto, Daichi Azuma, Masato Taki, Yutaka Matsuo</p>
-                                <p class="summary">ICCV2025 (International Conference on Computer Vision 2025)</p>
-                                <p><a class="more-link" href="https://arxiv.org/pdf/2506.23352" target="_blank"><i class="fas fa-external-link-alt"></i>Download PDF</a></p>
+                                <p class="summary" data-i18n="en">ICCV2025 (International Conference on Computer Vision 2025)</p>
+                                <p class="summary" data-i18n="ja">ICCV2025（国際コンピュータビジョン会議 2025）</p>
+                                <p><a class="more-link" href="https://arxiv.org/pdf/2506.23352" target="_blank"><i class="fas fa-external-link-alt"></i><span data-i18n="en">Download PDF</span><span data-i18n="ja">PDF をダウンロード</span></a></p>
                             </div><!--//item-->
                             
-                            <a class="btn btn-cta-secondary" href="https://snskysk.github.io/GeoProg3D/" target="_blank">More on GitHub <i class="fas fa-chevron-right pt-1"></i></a>
+                            <a class="btn btn-cta-secondary" href="https://snskysk.github.io/GeoProg3D/" target="_blank"><span data-i18n="en">More on GitHub</span><span data-i18n="ja">GitHub で詳細を見る</span> <i class="fas fa-chevron-right pt-1"></i></a>
                             
                         </div><!--//content-->  
 
                         <div class="content">
                             <div class="item">
                                 <h3 class="title"><span class="badge badge-theme">NeurIPS2026</span> <a href="https://arxiv.org/abs/2609.30478" target="_blank">The Shape of Events: Edge-Based Inductive Biases via Cross-Domain Distillation</a></h3>
-                                <p class="summary">Soshun Kihara*, Shunsuke Yasuki*, Masato Taki* (*All authors contributed equally)</p>
-                                <p class="summary">NeurIPS2026 (The Annual Conference on Neural Information Processing Systems 2026)</p>
-                                <p><a class="more-link" href="https://arxiv.org/pdf/2609.30478" target="_blank"><i class="fas fa-external-link-alt"></i>Download PDF</a></p>
+                                <p class="summary">Soshun Kihara*, Shunsuke Yasuki*, Masato Taki* <span data-i18n="en">(*All authors contributed equally)</span><span data-i18n="ja">（*全著者が同等に貢献）</span></p>
+                                <p class="summary" data-i18n="en">NeurIPS2026 (The Annual Conference on Neural Information Processing Systems 2026)</p>
+                                <p class="summary" data-i18n="ja">NeurIPS2026（ニューラル情報処理システム会議 2026）</p>
+                                <p><a class="more-link" href="https://arxiv.org/pdf/2609.30478" target="_blank"><i class="fas fa-external-link-alt"></i><span data-i18n="en">Download PDF</span><span data-i18n="ja">PDF をダウンロード</span></a></p>
                             </div><!--//item-->
                             
-                            <a class="btn btn-cta-secondary" href="https://github.com/snskysk/event2rgb-distillation" target="_blank">More on GitHub <i class="fas fa-chevron-right pt-1"></i></a>
+                            <a class="btn btn-cta-secondary" href="https://github.com/snskysk/event2rgb-distillation" target="_blank"><span data-i18n="en">More on GitHub</span><span data-i18n="ja">GitHub で詳細を見る</span> <i class="fas fa-chevron-right pt-1"></i></a>
                             
                         </div><!--//content-->  
 
@@ -129,47 +182,51 @@
             
                 <section class="education section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Academia</h2>
+                        <h2 class="heading"><span data-i18n="en">Academia</span><span data-i18n="ja">研究・学歴</span></h2>
                         <div class="content">
                             <div class="item">
-                                <h3 class="title"><i class="fas fa-microscope"></i> Project Researcher</h3>
-                                <h4 class="university">Matsuo-Iwasawa Lab, Graduate School of Engineering, The University of Tokyo, Tokyo, Japan <span class="year">(2026-Present)</span></h4>
-                                <p>Research on deep learning and computer vision, supervised by Yutaka Matsuo.</p>
+                                <h3 class="title"><i class="fas fa-microscope"></i> <span data-i18n="en">Project Researcher</span><span data-i18n="ja">特任研究員</span></h3>
+                                <h4 class="university"><span data-i18n="en">Matsuo-Iwasawa Lab, Graduate School of Engineering, The University of Tokyo, Tokyo, Japan</span><span data-i18n="ja">東京大学大学院工学系研究科 松尾・岩澤研究室（東京, 日本）</span> <span class="year"><span data-i18n="en">(2026-Present)</span><span data-i18n="ja">（2026年 - 現在）</span></span></h4>
+                                <p data-i18n="en">Research on deep learning and computer vision, supervised by Yutaka Matsuo.</p>
+                                <p data-i18n="ja">松尾豊教授のもとで、深層学習・コンピュータビジョンの研究に従事。</p>
                                 <ul>
-                                    <li>Deep Learning</li>
-                                    <li>Computer Vision</li>
+                                    <li><span data-i18n="en">Deep Learning</span><span data-i18n="ja">深層学習</span></li>
+                                    <li><span data-i18n="en">Computer Vision</span><span data-i18n="ja">コンピュータビジョン</span></li>
                                 </ul>
                             </div><!--//item-->
 
                             <div class="item">
-                                <h3 class="title"><i class="fas fa-graduation-cap"></i> Ph.D in Artificial Intelligence Science</h3>
-                                <h4 class="university">Graduate School of Artificial Intelligence and Science, Rikkyo University, Tokyo, Japan <span class="year">(2023-2026)</span></h4>
-                                <p>Majored in Computer Science, supervised by Masato Taki. The degree was awarded in March 2026.</p>
+                                <h3 class="title"><i class="fas fa-graduation-cap"></i> <span data-i18n="en">Ph.D in Artificial Intelligence Science</span><span data-i18n="ja">博士（人工知能科学）</span></h3>
+                                <h4 class="university"><span data-i18n="en">Graduate School of Artificial Intelligence and Science, Rikkyo University, Tokyo, Japan</span><span data-i18n="ja">立教大学大学院 人工知能科学研究科（東京, 日本）</span> <span class="year"><span data-i18n="en">(2023-2026)</span><span data-i18n="ja">（2023年 - 2026年）</span></span></h4>
+                                <p data-i18n="en">Majored in Computer Science, supervised by Masato Taki. The degree was awarded in March 2026.</p>
+                                <p data-i18n="ja">瀧雅人先生のもとで計算機科学を専攻。2026年3月に学位を授与されました。</p>
                                 <ul>
-                                    <li>Deep Learning</li>
-                                    <li>Computer Vision</li>
+                                    <li><span data-i18n="en">Deep Learning</span><span data-i18n="ja">深層学習</span></li>
+                                    <li><span data-i18n="en">Computer Vision</span><span data-i18n="ja">コンピュータビジョン</span></li>
                                 </ul>
                             </div><!--//item-->
                             
                             <div class="item">
-                                <h3 class="title"><i class="fas fa-graduation-cap"></i> MEng in Artificial Intelligence</h3>
-                                <h4 class="university">Rikkyo University, Tokyo, Japan <span class="year">(2021-2023)</span></h4>
-                                <p>Majored in Computer Science, supervised by Masato Taki.</p>
+                                <h3 class="title"><i class="fas fa-graduation-cap"></i> <span data-i18n="en">MEng in Artificial Intelligence</span><span data-i18n="ja">修士（人工知能科学）</span></h3>
+                                <h4 class="university"><span data-i18n="en">Rikkyo University, Tokyo, Japan</span><span data-i18n="ja">立教大学大学院 人工知能科学研究科（東京, 日本）</span> <span class="year"><span data-i18n="en">(2021-2023)</span><span data-i18n="ja">（2021年 - 2023年）</span></span></h4>
+                                <p data-i18n="en">Majored in Computer Science, supervised by Masato Taki.</p>
+                                <p data-i18n="ja">瀧雅人先生のもとで計算機科学を専攻。</p>
                                 <ul>
-                                    <li>Deep Learning</li>
-                                    <li>Computer Vision</li>
+                                    <li><span data-i18n="en">Deep Learning</span><span data-i18n="ja">深層学習</span></li>
+                                    <li><span data-i18n="en">Computer Vision</span><span data-i18n="ja">コンピュータビジョン</span></li>
                                 </ul>
                             </div><!--//item-->
 
                             <div class="item">
-                                <h3 class="title"><i class="fas fa-graduation-cap"></i> BEc in Accounting Finance</h3>
-                                <h4 class="university">Rikkyo University, Tokyo, Japan <span class="year">(2016-2020)</span></h4>
-                                <p>Majored in Management, supervised by Noritake Sunaga.</p>
+                                <h3 class="title"><i class="fas fa-graduation-cap"></i> <span data-i18n="en">BEc in Accounting Finance</span><span data-i18n="ja">学士（経営学）</span></h3>
+                                <h4 class="university"><span data-i18n="en">Rikkyo University, Tokyo, Japan</span><span data-i18n="ja">立教大学 経営学部（東京, 日本）</span> <span class="year"><span data-i18n="en">(2016-2020)</span><span data-i18n="ja">（2016年 - 2020年）</span></span></h4>
+                                <p data-i18n="en">Majored in Management, supervised by Noritake Sunaga.</p>
+                                <p data-i18n="ja">Noritake Sunaga 先生のもとで経営学を専攻。</p>
                                 <ul>
-                                    <li>Industry Analysis</li>
-                                    <li>Financial Analysis</li>
-                                    <li>Product and Service Planning</li>
-                                    <li>Planning Practice</li>
+                                    <li><span data-i18n="en">Industry Analysis</span><span data-i18n="ja">業界分析</span></li>
+                                    <li><span data-i18n="en">Financial Analysis</span><span data-i18n="ja">財務分析</span></li>
+                                    <li><span data-i18n="en">Product and Service Planning</span><span data-i18n="ja">商品・サービス企画</span></li>
+                                    <li><span data-i18n="en">Planning Practice</span><span data-i18n="ja">企画実践</span></li>
                                 </ul>
                             </div><!--//item-->
                             
@@ -179,36 +236,40 @@
 
                 <section class="experience section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Work Experience</h2>
+                        <h2 class="heading"><span data-i18n="en">Work Experience</span><span data-i18n="ja">職歴</span></h2>
                         <div class="content">
                             <div class="item">
                                 <!-- <h3 class="title"><img src="assets/images/projects/sakiku.png" style="width: 30px;"> <span style="color:dodgerblue">Technical Leader & Data Scientist</span> - <span class="place"><a href="#">JP, sAkIku</a></span> <span class="year">(2021 - Present)</span></h3> -->
-                                <h3 class="title"><img src="assets/images/projects/sakiku.png" style="width: 30px;"> Technical Leader & Data Scientist - <span class="place"><a href="#">JP, sAkIku</a></span> <span class="year">(2021 - Present)</span></h3>
-                                <p>I led a technical team of about 10 engineers. I am not the president of the company, but I started the company with the president.</p>
+                                <h3 class="title"><img src="assets/images/projects/sakiku.png" style="width: 30px;"> <span data-i18n="en">Technical Leader &amp; Data Scientist</span><span data-i18n="ja">テクニカルリーダー / データサイエンティスト</span> - <span class="place"><a href="#"><span data-i18n="en">JP, sAkIku</span><span data-i18n="ja">日本, sAkIku</span></a></span> <span class="year"><span data-i18n="en">(2021 - Present)</span><span data-i18n="ja">（2021年 - 現在）</span></span></h3>
+                                <p data-i18n="en">I led a technical team of about 10 engineers. I am not the president of the company, but I started the company with the president.</p>
+                                <p data-i18n="ja">約10名のエンジニアからなる技術チームを率いました。代表ではありませんが、代表と共に会社を立ち上げました。</p>
                                 <ul>
-                                    <li>Data analysis and AI development for the development of non-invasive ecological devices for client companies.</li>
-                                    <li>System design and AI development to visualize the distance between various sensor data and the basis for predicting anomalies using AI.</li>
-                                    <li>Management and human resources related tasks.</li>
+                                    <li><span data-i18n="en">Data analysis and AI development for the development of non-invasive ecological devices for client companies.</span><span data-i18n="ja">クライアント企業向けの非侵襲生体センシングデバイス開発に伴う、データ分析と AI 開発。</span></li>
+                                    <li><span data-i18n="en">System design and AI development to visualize the distance between various sensor data and the basis for predicting anomalies using AI.</span><span data-i18n="ja">各種センサーデータ間の距離や、AI による異常予測の根拠を可視化するためのシステム設計と AI 開発。</span></li>
+                                    <li><span data-i18n="en">Management and human resources related tasks.</span><span data-i18n="ja">経営および人事に関連する業務。</span></li>
                                 </ul>
                             </div><!--//item-->
                             
                             <div class="item">
-                                <h3 class="title"><img src="assets/images/projects/revorn.png" style="width: 30px;"> Data Scientist -> CTO - <span class="place"><a href="#">JP, Revorn</a></span> <span class="year">(2020 - 2021)</span></h3>
-                                <p>I joined the company after a period of internship. I was eventually appointed CTO and led a technical team of about 20 people.</p>
+                                <h3 class="title"><img src="assets/images/projects/revorn.png" style="width: 30px;"> <span data-i18n="en">Data Scientist -&gt; CTO</span><span data-i18n="ja">データサイエンティスト → CTO</span> - <span class="place"><a href="#"><span data-i18n="en">JP, Revorn</span><span data-i18n="ja">日本, Revorn</span></a></span> <span class="year"><span data-i18n="en">(2020 - 2021)</span><span data-i18n="ja">（2020年 - 2021年）</span></span></h3>
+                                <p data-i18n="en">I joined the company after a period of internship. I was eventually appointed CTO and led a technical team of about 20 people.</p>
+                                <p data-i18n="ja">インターンを経て入社し、最終的に CTO に就任、約20名の技術チームを率いました。</p>
                                 <ul>
-                                    <li>Data Scientist: Analysis of odor sensor data and AI development</li>
-                                    <li>CTO: Formulate and facilitate development plans, brief stakeholders, and same tasks as above.</li>
+                                    <li><span data-i18n="en">Data Scientist: Analysis of odor sensor data and AI development</span><span data-i18n="ja">データサイエンティスト：においセンサーデータの分析と AI 開発</span></li>
+                                    <li><span data-i18n="en">CTO: Formulate and facilitate development plans, brief stakeholders, and same tasks as above.</span><span data-i18n="ja">CTO：開発計画の策定と推進、ステークホルダーへの説明、および上記と同様の業務</span></li>
                                 </ul>
                             </div><!--//item-->
 
                             <div class="item">
-                                <h3 class="title"><img src="assets/images/projects/c_method.png" style="width: 30px;"> Internship Data Scientist - <span class="place"><a href="#">JP, CrystalMethod</a></span> <span class="year">(2018 - 2019)</span></h3>
-                                <p>I was hired as an internship student for about six months to support the development of dialogue AI and the automatic collection of training data.</p>
+                                <h3 class="title"><img src="assets/images/projects/c_method.png" style="width: 30px;"> <span data-i18n="en">Internship Data Scientist</span><span data-i18n="ja">インターン データサイエンティスト</span> - <span class="place"><a href="#"><span data-i18n="en">JP, CrystalMethod</span><span data-i18n="ja">日本, CrystalMethod</span></a></span> <span class="year"><span data-i18n="en">(2018 - 2019)</span><span data-i18n="ja">（2018年 - 2019年）</span></span></h3>
+                                <p data-i18n="en">I was hired as an internship student for about six months to support the development of dialogue AI and the automatic collection of training data.</p>
+                                <p data-i18n="ja">約6か月間インターンとして、対話 AI の開発と学習データの自動収集を担当しました。</p>
                             </div><!--//item-->
 
                             <div class="item">
-                                <h3 class="title"><img src="assets/images/projects/DLR.png" style="width: 30px;"> Internship Python Engineer - <span class="place"><a href="#">DE, DLR(German Aerospace Center)</a></span> <span class="year">(2018)</span></h3>
-                                <p>I was hired as an internship student for about two months to analyze pressure measurement data.</p>
+                                <h3 class="title"><img src="assets/images/projects/DLR.png" style="width: 30px;"> <span data-i18n="en">Internship Python Engineer</span><span data-i18n="ja">インターン Python エンジニア</span> - <span class="place"><a href="#"><span data-i18n="en">DE, DLR(German Aerospace Center)</span><span data-i18n="ja">ドイツ, DLR（ドイツ航空宇宙センター）</span></a></span> <span class="year"><span data-i18n="en">(2018)</span><span data-i18n="ja">（2018年）</span></span></h3>
+                                <p data-i18n="en">I was hired as an internship student for about two months to analyze pressure measurement data.</p>
+                                <p data-i18n="ja">約2か月間インターンとして、圧力計測データの分析を担当しました。</p>
                             </div><!--//item-->
 
                             
@@ -218,11 +279,12 @@
 
                 <section class="experience section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Awards &amp; Grants</h2>
+                        <h2 class="heading"><span data-i18n="en">Awards &amp; Grants</span><span data-i18n="ja">受賞・採択</span></h2>
                         <div class="content">
                             <div class="item">
-                                <h3 class="title"><i class="fas fa-award"></i> AIST KAKUSEI Project - <span class="place">JP, National Institute of Advanced Industrial Science and Technology (AIST)</span> <span class="year">(FY2025)</span></h3>
-                                <p>Selected for the FY2025 (Reiwa 7) AIST KAKUSEI Project, a program of the National Institute of Advanced Industrial Science and Technology that supports challenging research proposals by young researchers.</p>
+                                <h3 class="title"><i class="fas fa-award"></i> <span data-i18n="en">AIST KAKUSEI Project</span><span data-i18n="ja">産総研「覚醒」プロジェクト</span> - <span class="place"><span data-i18n="en">JP, National Institute of Advanced Industrial Science and Technology (AIST)</span><span data-i18n="ja">日本, 産業技術総合研究所</span></span> <span class="year"><span data-i18n="en">(FY2025)</span><span data-i18n="ja">（令和7年度）</span></span></h3>
+                                <p data-i18n="en">Selected for the FY2025 (Reiwa 7) AIST KAKUSEI Project, a program of the National Institute of Advanced Industrial Science and Technology that supports challenging research proposals by young researchers.</p>
+                                <p data-i18n="ja">令和7年度 産業技術総合研究所「覚醒」プロジェクトに採択されました。若手研究者の挑戦的な研究提案を支援するプログラムです。</p>
                             </div><!--//item-->
                         </div><!--//content-->  
                     </div><!--//section-inner-->                 
@@ -230,16 +292,18 @@
 
                 <section class="experience section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Academic Service</h2>
+                        <h2 class="heading"><span data-i18n="en">Academic Service</span><span data-i18n="ja">学術貢献</span></h2>
                         <div class="content">
                             <div class="item">
-                                <h3 class="title"><i class="fas fa-file-alt"></i> Reviewer - <span class="place"><a href="https://neurips.cc/" target="_blank">NeurIPS 2025</a></span> <span class="year">(2025)</span></h3>
-                                <p>Served as a reviewer for NeurIPS 2025 (The Annual Conference on Neural Information Processing Systems).</p>
+                                <h3 class="title"><i class="fas fa-file-alt"></i> <span data-i18n="en">Reviewer</span><span data-i18n="ja">査読委員</span> - <span class="place"><a href="https://neurips.cc/" target="_blank">NeurIPS 2025</a></span> <span class="year"><span data-i18n="en">(2025)</span><span data-i18n="ja">（2025年）</span></span></h3>
+                                <p data-i18n="en">Served as a reviewer for NeurIPS 2025 (The Annual Conference on Neural Information Processing Systems).</p>
+                                <p data-i18n="ja">NeurIPS 2025（ニューラル情報処理システム会議）の査読を担当しました。</p>
                             </div><!--//item-->
 
                             <div class="item">
-                                <h3 class="title"><i class="fas fa-users"></i> Operating Committee Member - <span class="place"><a href="https://www.ai-gakkai.or.jp/" target="_blank">JP, JSAI (The Japanese Society for Artificial Intelligence)</a></span> <span class="year">(2025 - Present)</span></h3>
-                                <p>Serving as an operating committee member of the Japanese Society for Artificial Intelligence.</p>
+                                <h3 class="title"><i class="fas fa-users"></i> <span data-i18n="en">Operating Committee Member</span><span data-i18n="ja">運営委員</span> - <span class="place"><a href="https://www.ai-gakkai.or.jp/" target="_blank"><span data-i18n="en">JP, JSAI (The Japanese Society for Artificial Intelligence)</span><span data-i18n="ja">日本, 人工知能学会（JSAI）</span></a></span> <span class="year"><span data-i18n="en">(2025 - Present)</span><span data-i18n="ja">（2025年 - 現在）</span></span></h3>
+                                <p data-i18n="en">Serving as an operating committee member of the Japanese Society for Artificial Intelligence.</p>
+                                <p data-i18n="ja">人工知能学会の運営委員を務めています。</p>
                             </div><!--//item-->
                         </div><!--//content-->  
                     </div><!--//section-inner-->                 
@@ -249,7 +313,7 @@
 
                 <section class="latest section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Latest Works</h2>
+                        <h2 class="heading"><span data-i18n="en">Latest Works</span><span data-i18n="ja">最近の発表資料</span></h2>
                         <div class="content">                                                   
                             <div class="item featured text-center">
                                 
@@ -262,10 +326,11 @@
                                     </div>
                                 </div>
                                 
-                                <h3 class="title mb-3"><a href="https://www.docswell.com/s/8328889256/5EXMXD-2025-04-18-131029" target="_blank">Review - Research trends in modality gap</a></h3>
+                                <h3 class="title mb-3"><a href="https://www.docswell.com/s/8328889256/5EXMXD-2025-04-18-131029" target="_blank"><span data-i18n="en">Review - Research trends in modality gap</span><span data-i18n="ja">調査 - モダリティギャップの研究動向</span></a></h3>
                                     
                                 <div class="desc text-start">                                    
-                                    <p>This document reviews recent research trends on the geometric phenomenon of “modality gaps” in the representation space of multimodal models. Each paper presents different perspectives on the causes of gaps and the effects of closing them.</p>
+                                    <p data-i18n="en">This document reviews recent research trends on the geometric phenomenon of “modality gaps” in the representation space of multimodal models. Each paper presents different perspectives on the causes of gaps and the effects of closing them.</p>
+                                    <p data-i18n="ja">マルチモーダルモデルの表現空間に現れる「モダリティギャップ」という幾何学的現象について、近年の研究動向を整理した資料です。各論文は、ギャップの発生要因と、それを埋めた場合の効果について、それぞれ異なる視点を提示しています。</p>
                                 </div><!--//desc-->         
                                 <!-- <a class="btn btn-cta-secondary" href="https://themes.3rdwavemedia.com/bootstrap-templates/startup/launch-bootstrap-4-template-for-saas-businesses/" target="_blank"><i class="fas fa-thumbs-up"></i> Back my project</a>                  -->
                             </div><!--//item-->
@@ -276,8 +341,9 @@
                                 <img class="img-fluid project-image rounded shadow-sm" src="assets/images/projects/paper_intro_4.jpg" alt="project name" />
                             </a>
                                 <div class="desc col-md-8 col-12">
-                                    <h3 class="title mb-3"><a href="https://www.docswell.com/s/8328889256/K4V7VW-2025-04-18-124329" target="_blank">Paper Reading - FFNet: MetaMixer-based Efficient Convolutional Mixer Design</a></h3>
-                                    <p class="mb-2">This paper focuses on the Feed-Forward Network (FFN) of Transformers and proposes “FFNification,” which converts the self-attention mechanism into an efficient token mixer while maintaining the query-key-value framework. This method replaces self-attention with large-scale kernel convolutions and GELU activation functions, developing “FFNified attention” that is symmetric in the dimension direction. This enables the construction of the “MetaMixer” architecture, which integrates the advantages of traditional Transformers and convolutional neural networks, achieving high performance and efficiency across diverse domains such as image classification and generation tasks.</p>
+                                    <h3 class="title mb-3"><a href="https://www.docswell.com/s/8328889256/K4V7VW-2025-04-18-124329" target="_blank"><span data-i18n="en">Paper Reading</span><span data-i18n="ja">論文紹介</span> - FFNet: MetaMixer-based Efficient Convolutional Mixer Design</a></h3>
+                                    <p class="mb-2" data-i18n="en">This paper focuses on the Feed-Forward Network (FFN) of Transformers and proposes “FFNification,” which converts the self-attention mechanism into an efficient token mixer while maintaining the query-key-value framework. This method replaces self-attention with large-scale kernel convolutions and GELU activation functions, developing “FFNified attention” that is symmetric in the dimension direction. This enables the construction of the “MetaMixer” architecture, which integrates the advantages of traditional Transformers and convolutional neural networks, achieving high performance and efficiency across diverse domains such as image classification and generation tasks.</p>
+                                    <p class="mb-2" data-i18n="ja">本論文は Transformer の Feed-Forward Network（FFN）に着目し、query-key-value の枠組みを保ちながら自己注意機構を効率的なトークンミキサーへ変換する「FFNification」を提案しています。自己注意を大カーネル畳み込みと GELU 活性化関数で置き換え、次元方向に対称な「FFNified attention」を構築します。これにより、従来の Transformer と畳み込みニューラルネットワークの利点を統合した「MetaMixer」アーキテクチャを実現し、画像分類や生成タスクなど多様な領域で高い性能と効率を達成しています。</p>
                                     <!-- <p><a class="more-link" href="https://zinc-dolomite-fca.notion.site/In-Context-Learning-Creates-Task-Vectors-1a319cb602444326ae27a78c3385a1ed?pvs=4" target="_blank"><i class="fas fa-external-link-alt"></i>Find out more</a></p> -->
                                 </div><!--//desc-->                          
                             </div><!--//item-->
@@ -289,8 +355,9 @@
                                 <img class="img-fluid project-image rounded shadow-sm" src="assets/images/projects/paper_intro_3.jpg" alt="project name" />
                             </a>
                                 <div class="desc col-md-8 col-12">
-                                    <h3 class="title mb-3"><a href="https://www.docswell.com/s/snskysk/5P9N86-2024-04-26-014107" target="_blank">Paper Reading - PeLK: Parameter-efficient Large Kernel ConvNets with Peripheral Convolution</a></h3>
-                                    <p class="mb-2">In the field of computer vision, CNN research is still active, inspired by the high performance of ViT. For example, research on increasing the kernel size and making it long-range dependent like ViT has attracted much attention. Here we present PeLK, the first model with a kernel size exceeding 100. This paper was accepted by CVPR 2024 and submitted in March 2024.</p>
+                                    <h3 class="title mb-3"><a href="https://www.docswell.com/s/snskysk/5P9N86-2024-04-26-014107" target="_blank"><span data-i18n="en">Paper Reading</span><span data-i18n="ja">論文紹介</span> - PeLK: Parameter-efficient Large Kernel ConvNets with Peripheral Convolution</a></h3>
+                                    <p class="mb-2" data-i18n="en">In the field of computer vision, CNN research is still active, inspired by the high performance of ViT. For example, research on increasing the kernel size and making it long-range dependent like ViT has attracted much attention. Here we present PeLK, the first model with a kernel size exceeding 100. This paper was accepted by CVPR 2024 and submitted in March 2024.</p>
+                                    <p class="mb-2" data-i18n="ja">コンピュータビジョン分野では、ViT の高い性能に触発され、CNN の研究も依然として活発です。例えば、カーネルサイズを大きくして ViT のように長距離依存を扱えるようにする研究が注目を集めています。本資料では、カーネルサイズが 100 を超える最初のモデルである PeLK を紹介します。本論文は CVPR 2024 に採択され、2024年3月に公開されました。</p>
                                     <!-- <p><a class="more-link" href="https://zinc-dolomite-fca.notion.site/In-Context-Learning-Creates-Task-Vectors-1a319cb602444326ae27a78c3385a1ed?pvs=4" target="_blank"><i class="fas fa-external-link-alt"></i>Find out more</a></p> -->
                                 </div><!--//desc-->                          
                             </div><!--//item-->
@@ -302,8 +369,9 @@
                                 <img class="img-fluid project-image rounded shadow-sm" src="assets/images/projects/paper_intro_2.jpg" alt="project name" />
                                 </a>
                                 <div class="desc col-md-8 col-12">
-                                    <h3 class="title"><a href="https://www.docswell.com/s/snskysk/ZW1PEJ-2024-04-26-021801" target="_blank">Paper Reading - High-Performance Large-Scale Image Recognition Without Normalization</a></h3>
-                                    <p class="mb-2">This document summarizes NFNets, the CNNs whose scale rules were reported in the 2023/11 paper. It also discusses its predecessor, NF-ResNets, and why these Normalizar-Free Nets are needed.</p>
+                                    <h3 class="title"><a href="https://www.docswell.com/s/snskysk/ZW1PEJ-2024-04-26-021801" target="_blank"><span data-i18n="en">Paper Reading</span><span data-i18n="ja">論文紹介</span> - High-Performance Large-Scale Image Recognition Without Normalization</a></h3>
+                                    <p class="mb-2" data-i18n="en">This document summarizes NFNets, the CNNs whose scale rules were reported in the 2023/11 paper. It also discusses its predecessor, NF-ResNets, and why these Normalizar-Free Nets are needed.</p>
+                                    <p class="mb-2" data-i18n="ja">2023年11月の論文で報告されたスケーリング則をもつ CNN、NFNets についてまとめた資料です。その前身である NF-ResNets と、これら Normalizer-Free Nets が必要とされる理由についても解説しています。</p>
                                     <!-- <p><a class="more-link" href="https://zinc-dolomite-fca.notion.site/In-Context-Learning-Creates-Task-Vectors-1a319cb602444326ae27a78c3385a1ed?pvs=4" target="_blank"><i class="fas fa-external-link-alt"></i>Find out more</a></p> -->
                                 </div><!--//desc-->                          
                             </div><!--//item-->
@@ -315,8 +383,9 @@
                                 <img class="img-fluid project-image rounded shadow-sm" src="assets/images/projects/paper_intro_1.png" alt="project name" />
                                 </a>
                                 <div class="desc col-md-8 col-12">
-                                    <h3 class="title"><a href="https://www.docswell.com/s/snskysk/KDEPDL-2024-04-26-020912" target="_blank">Paper Reading - In-Context Learning Creates Task Vectors</a></h3>
-                                    <p class="mb-2">When a model captures the rules in the input without changing or adjusting parameters (so-called learning), it is called In-Context Learning. This paper attempts to elucidate this phenomenon through a simple and elegant experiment. Specifically, we define the concept of task vectors, show their existence, and measure and visualize their efficacy.</p>
+                                    <h3 class="title"><a href="https://www.docswell.com/s/snskysk/KDEPDL-2024-04-26-020912" target="_blank"><span data-i18n="en">Paper Reading</span><span data-i18n="ja">論文紹介</span> - In-Context Learning Creates Task Vectors</a></h3>
+                                    <p class="mb-2" data-i18n="en">When a model captures the rules in the input without changing or adjusting parameters (so-called learning), it is called In-Context Learning. This paper attempts to elucidate this phenomenon through a simple and elegant experiment. Specifically, we define the concept of task vectors, show their existence, and measure and visualize their efficacy.</p>
+                                    <p class="mb-2" data-i18n="ja">パラメータを変更・調整すること（いわゆる学習）なく、モデルが入力中の規則を捉える現象は In-Context Learning と呼ばれます。本論文は、シンプルかつ見事な実験を通じて、この現象の解明を試みています。具体的には、タスクベクトルという概念を定義し、その存在を示し、有効性を測定・可視化しています。</p>
                                     <!-- <p><a class="more-link" href="https://zinc-dolomite-fca.notion.site/In-Context-Learning-Creates-Task-Vectors-1a319cb602444326ae27a78c3385a1ed?pvs=4" target="_blank"><i class="fas fa-external-link-alt"></i>Find out more</a></p> -->
                                 </div><!--//desc-->                          
                             </div><!--//item-->
@@ -372,18 +441,19 @@
 
                 <section class="latest section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Latest News</h2>
+                        <h2 class="heading"><span data-i18n="en">Latest News</span><span data-i18n="ja">最新ニュース</span></h2>
                         <div class="content">    
 
                             <div class="item">
-                                <h3 class="title mb-3"><span class="badge badge-theme">New</span> <a href="https://www.rikkyo.ac.jp/news/2025/07/mknpps00000397x7.html" target="_blank">Press releases regarding my ICCV2025 paper have been published.</a></h3>
+                                <h3 class="title mb-3"><span class="badge badge-theme">New</span> <a href="https://www.rikkyo.ac.jp/news/2025/07/mknpps00000397x7.html" target="_blank"><span data-i18n="en">Press releases regarding my ICCV2025 paper have been published.</span><span data-i18n="ja">ICCV2025 の論文に関するプレスリリースが公開されました。</span></a></h3>
 
                                 <div class="desc text-start">
-                                    <p>The following institutions published press releases about this work.</p>
+                                    <p data-i18n="en">The following institutions published press releases about this work.</p>
+                                    <p data-i18n="ja">以下の機関からプレスリリースが公開されました。</p>
                                     <p>
                                         <ul>
-                                            <li><a href="https://www.rikkyo.ac.jp/news/2025/07/mknpps00000397x7.html" target="_blank">立教大学 (Rikkyo University)</a></li>
-                                            <li><a href="https://weblab.t.u-tokyo.ac.jp/news/20250626/" target="_blank">東京大学 松尾・岩澤研究室 (Matsuo-Iwasawa Lab, The University of Tokyo)</a></li>
+                                            <li><a href="https://www.rikkyo.ac.jp/news/2025/07/mknpps00000397x7.html" target="_blank"><span data-i18n="en">Rikkyo University</span><span data-i18n="ja">立教大学</span></a></li>
+                                            <li><a href="https://weblab.t.u-tokyo.ac.jp/news/20250626/" target="_blank"><span data-i18n="en">Matsuo-Iwasawa Lab, The University of Tokyo</span><span data-i18n="ja">東京大学 松尾・岩澤研究室</span></a></li>
                                         </ul>
                                     </p>
                                 </div><!--//desc-->
@@ -399,10 +469,11 @@
                                     </a>
                                 </div>
                                 
-                                <h3 class="title mb-3"><a href="https://www.rikkyo.ac.jp/news/2024/03/mknpps000002h1sd.html" target="_blank">A press release regarding my CVPR2024 paper has been published.</a></h3>
+                                <h3 class="title mb-3"><a href="https://www.rikkyo.ac.jp/news/2024/03/mknpps000002h1sd.html" target="_blank"><span data-i18n="en">A press release regarding my CVPR2024 paper has been published.</span><span data-i18n="ja">CVPR2024 の論文に関するプレスリリースが公開されました。</span></a></h3>
                                     
                                 <div class="desc text-start">                                    
-                                    <p>The following various media also reported on this press release.</p>
+                                    <p data-i18n="en">The following various media also reported on this press release.</p>
+                                    <p data-i18n="ja">このプレスリリースは、以下の各種メディアにも取り上げられました。</p>
                                     <p>
                                         <ul>
                                             <li><a href="https://mainichi.jp/articles/20240314/pls/00m/020/545000c" target="_blank">毎日新聞</a></li>
@@ -435,7 +506,7 @@
                                 <img class="img-fluid project-image rounded shadow-sm" src="assets/images/projects/project-1.png" alt="project name" />
                                 </a>
                                 <div class="desc col-md-8 col-12">
-                                    <h3 class="title"><a href="https://zinc-dolomite-fca.notion.site/In-Context-Learning-Creates-Task-Vectors-1a319cb602444326ae27a78c3385a1ed?pvs=4" target="_blank">Paper Reading - In-Context Learning Creates Task Vectors</a></h3>
+                                    <h3 class="title"><a href="https://zinc-dolomite-fca.notion.site/In-Context-Learning-Creates-Task-Vectors-1a319cb602444326ae27a78c3385a1ed?pvs=4" target="_blank"><span data-i18n="en">Paper Reading</span><span data-i18n="ja">論文紹介</span> - In-Context Learning Creates Task Vectors</a></h3>
                                     <p class="mb-2">When a model captures the rules in the input without changing or adjusting parameters (so-called learning), it is called In-Context Learning. This paper attempts to elucidate this phenomenon through a simple and elegant experiment. Specifically, we define the concept of task vectors, show their existence, and measure and visualize their efficacy.</p>
                                 </div>                          
                             </div> -->
@@ -451,7 +522,7 @@
 
                 <section class="latest section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Personal Development Apps</h2>
+                        <h2 class="heading"><span data-i18n="en">Personal Development Apps</span><span data-i18n="ja">個人開発アプリ</span></h2>
                         <div class="content">    
                                                
                             <div class="item featured text-center">
@@ -465,10 +536,11 @@
                                     </div> -->
                                 </div>
                                 
-                                <h3 class="title mb-3"><a href="https://grade-visualizer101.herokuapp.com/gv/" target="_blank">Rikkyo University Student Application for Optimizing Course Registration(Anyone can access the top page)</a></h3>
+                                <h3 class="title mb-3"><a href="https://grade-visualizer101.herokuapp.com/gv/" target="_blank"><span data-i18n="en">Rikkyo University Student Application for Optimizing Course Registration (Anyone can access the top page)</span><span data-i18n="ja">立教大学生向け 履修最適化アプリ（トップページは誰でも閲覧できます）</span></a></h3>
                                     
                                 <div class="desc text-start">                                    
-                                    <p>The app is called "Re:Re:ss" and currently has over 10,000 users. Since the University has approximately 5,000 students per academic year, the graph shows that more than 40% of the most recently enrolled students are using the application. Development began in August 2018 and was launched in November 2018. It has the ability to automatically register the course and grade data of users who have agreed to use this app in the database within this app. Based on the collected data, the app provides users with information on the difficulty of obtaining credits, taking into account the tendencies of the course instructor.</p>
+                                    <p data-i18n="en">The app is called "Re:Re:ss" and currently has over 10,000 users. Since the University has approximately 5,000 students per academic year, the graph shows that more than 40% of the most recently enrolled students are using the application. Development began in August 2018 and was launched in November 2018. It has the ability to automatically register the course and grade data of users who have agreed to use this app in the database within this app. Based on the collected data, the app provides users with information on the difficulty of obtaining credits, taking into account the tendencies of the course instructor.</p>
+                                    <p data-i18n="ja">このアプリは「Re:Re:ss」という名称で、現在 10,000 人以上のユーザーに利用されています。立教大学の1学年の学生数は約 5,000 人であるため、グラフから、直近の入学者の 40% 以上が本アプリを利用していることが分かります。2018年8月に開発を開始し、同年11月にリリースしました。利用に同意したユーザーの履修・成績データを、アプリ内のデータベースへ自動登録する機能を備えています。収集したデータに基づき、担当教員の傾向を考慮した単位取得の難易度をユーザーに提供します。</p>
                                 </div><!--//desc-->         
                                 <!-- <a class="btn btn-cta-secondary" href="https://themes.3rdwavemedia.com/bootstrap-templates/startup/launch-bootstrap-4-template-for-saas-businesses/" target="_blank"><i class="fas fa-thumbs-up"></i> Back my project</a>                  -->
                             </div><!--//item-->
@@ -500,7 +572,7 @@
                                 <p><a class="more-link" href="https://themes.3rdwavemedia.com/bootstrap-templates/startup/nova-bootstrap-landing-page-template-for-mobile-apps/" target="_blank"><i class="fas fa-external-link-alt"></i>Download Now</a></p>
                             </div>
                             
-                            <a class="btn btn-cta-secondary" href="#">More on GitHub <i class="fas fa-chevron-right pt-1"></i></a>
+                            <a class="btn btn-cta-secondary" href="#"><span data-i18n="en">More on GitHub</span><span data-i18n="ja">GitHub で詳細を見る</span> <i class="fas fa-chevron-right pt-1"></i></a>
                         </div>  
                     </div>                 
                 </section> -->
@@ -533,10 +605,10 @@
             <div class="secondary col-lg-4 col-12">
                  <aside class="info aside section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading sr-only">Basic Information</h2>
+                        <h2 class="heading sr-only"><span data-i18n="en">Basic Information</span><span data-i18n="ja">基本情報</span></h2>
                         <div class="content">
                             <ul class="list-unstyled">
-                                <li><i class="fas fa-map-marker-alt"></i><span class="sr-only">Location:</span>Tokyo, JP</li>
+                                <li><i class="fas fa-map-marker-alt"></i><span class="sr-only">Location:</span><span data-i18n="en">Tokyo, JP</span><span data-i18n="ja">東京, 日本</span></li>
                                 <li><i class="fas fa-envelope"></i><span class="sr-only">Email:</span><a href="mailto:shunsuke.yasuki@weblab.t.u-tokyo.ac.jp">shunsuke.yasuki@weblab.t.u-tokyo.ac.jp</a></li>
                                 <li><i class="fas fa-link"></i><span class="sr-only">Website:</span><a href="https://weblab.t.u-tokyo.ac.jp/" target="_blank">https://weblab.t.u-tokyo.ac.jp/</a></li>
                                 <li><i class="fas fa-link"></i><span class="sr-only">Website:</span><a href="https://sites.google.com/rikkyo.ac.jp/taki-labo/" target="_blank">https://sites.google.com/rikkyo.ac.jp/taki-labo/</a></li>
@@ -547,33 +619,33 @@
 
                 <aside class="list conferences aside section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Conferences</h2>
+                        <h2 class="heading"><span data-i18n="en">Conferences</span><span data-i18n="ja">学会・国際会議</span></h2>
                         <div class="content">
                             <ul class="list-unstyled">
-                                <li><a href="https://arxiv.org/abs/2403.06676" target="_blank"><span class="badge badge-theme">CVPR2024</span></a> (Seattle) - World Top Conference</li>
-                                <li>--- My paper's page : <a href="https://arxiv.org/abs/2403.06676" target="_blank"><span><img src="https://img.shields.io/badge/arXiv-2403.06676-b31b1b.svg?style=plastic"></span></a> </li>
-                                <li>--- My paper's project page : <a href="https://github.com/snskysk/CAM-Back-Again" target="_blank"><span><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></span></a> </li>
-                                <li>--- Conference page : <a href="https://cvpr.thecvf.com/" target="_blank"><span><img src="https://img.shields.io/badge/CVPR-2024-1B427D"></span></a> </li>
+                                <li><a href="https://arxiv.org/abs/2403.06676" target="_blank"><span class="badge badge-theme">CVPR2024</span></a> <span data-i18n="en">(Seattle) - World Top Conference</span><span data-i18n="ja">（シアトル）- トップ国際会議</span></li>
+                                <li><span data-i18n="en">--- My paper's page : </span><span data-i18n="ja">--- 論文ページ : </span><a href="https://arxiv.org/abs/2403.06676" target="_blank"><span><img src="https://img.shields.io/badge/arXiv-2403.06676-b31b1b.svg?style=plastic"></span></a> </li>
+                                <li><span data-i18n="en">--- My paper's project page : </span><span data-i18n="ja">--- プロジェクトページ : </span><a href="https://github.com/snskysk/CAM-Back-Again" target="_blank"><span><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></span></a> </li>
+                                <li><span data-i18n="en">--- Conference page : </span><span data-i18n="ja">--- 会議ページ : </span><a href="https://cvpr.thecvf.com/" target="_blank"><span><img src="https://img.shields.io/badge/CVPR-2024-1B427D"></span></a> </li>
                                 <!-- <li><i class="far fa-calendar-alt"></i> <a href="https://github.com/snskysk/CAM-Back-Again" target="_blank">CVPR 2024</a> (Seattle)</li> -->                                
                             </ul>
                         </div><!--//content-->
 
                         <div class="content">
                             <ul class="list-unstyled">
-                                <li><a href="https://arxiv.org/abs/2506.23352" target="_blank"><span class="badge badge-theme">ICCV2025</span></a> (Hawaii) - World Top Conference</li>
-                                <li>--- My paper's page : <a href="https://arxiv.org/abs/2506.23352" target="_blank"><span><img src="https://img.shields.io/badge/arXiv-2506.23352-b31b1b.svg?style=plastic"></span></a> </li>
-                                <li>--- My paper's project page : <a href="https://snskysk.github.io/GeoProg3D/" target="_blank"><span><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></span></a> </li>
-                                <li>--- Conference page : <a href="https://iccv.thecvf.com/" target="_blank"><span><img src="https://img.shields.io/badge/ICCV-2025-1B427D"></span></a> </li>
+                                <li><a href="https://arxiv.org/abs/2506.23352" target="_blank"><span class="badge badge-theme">ICCV2025</span></a> <span data-i18n="en">(Hawaii) - World Top Conference</span><span data-i18n="ja">（ハワイ）- トップ国際会議</span></li>
+                                <li><span data-i18n="en">--- My paper's page : </span><span data-i18n="ja">--- 論文ページ : </span><a href="https://arxiv.org/abs/2506.23352" target="_blank"><span><img src="https://img.shields.io/badge/arXiv-2506.23352-b31b1b.svg?style=plastic"></span></a> </li>
+                                <li><span data-i18n="en">--- My paper's project page : </span><span data-i18n="ja">--- プロジェクトページ : </span><a href="https://snskysk.github.io/GeoProg3D/" target="_blank"><span><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></span></a> </li>
+                                <li><span data-i18n="en">--- Conference page : </span><span data-i18n="ja">--- 会議ページ : </span><a href="https://iccv.thecvf.com/" target="_blank"><span><img src="https://img.shields.io/badge/ICCV-2025-1B427D"></span></a> </li>
                                 <!-- <li><i class="far fa-calendar-alt"></i> <a href="https://github.com/snskysk/CAM-Back-Again" target="_blank">CVPR 2024</a> (Seattle)</li> -->                                
                             </ul>
                         </div><!--//content-->
 
                         <div class="content">
                             <ul class="list-unstyled">
-                                <li><a href="https://arxiv.org/abs/2609.30478" target="_blank"><span class="badge badge-theme">NeurIPS2026</span></a> (Sydney) - World Top Conference</li>
-                                <li>--- My paper's page : <a href="https://arxiv.org/abs/2609.30478" target="_blank"><span><img src="https://img.shields.io/badge/arXiv-2609.30478-b31b1b.svg?style=plastic"></span></a> </li>
-                                <li>--- My paper's project page : <a href="https://github.com/snskysk/event2rgb-distillation" target="_blank"><span><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></span></a> </li>
-                                <li>--- Conference page : <a href="https://neurips.cc/" target="_blank"><span><img src="https://img.shields.io/badge/NeurIPS-2026-1B427D"></span></a> </li>
+                                <li><a href="https://arxiv.org/abs/2609.30478" target="_blank"><span class="badge badge-theme">NeurIPS2026</span></a> <span data-i18n="en">(Sydney) - World Top Conference</span><span data-i18n="ja">（シドニー）- トップ国際会議</span></li>
+                                <li><span data-i18n="en">--- My paper's page : </span><span data-i18n="ja">--- 論文ページ : </span><a href="https://arxiv.org/abs/2609.30478" target="_blank"><span><img src="https://img.shields.io/badge/arXiv-2609.30478-b31b1b.svg?style=plastic"></span></a> </li>
+                                <li><span data-i18n="en">--- My paper's project page : </span><span data-i18n="ja">--- プロジェクトページ : </span><a href="https://github.com/snskysk/event2rgb-distillation" target="_blank"><span><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></span></a> </li>
+                                <li><span data-i18n="en">--- Conference page : </span><span data-i18n="ja">--- 会議ページ : </span><a href="https://neurips.cc/" target="_blank"><span><img src="https://img.shields.io/badge/NeurIPS-2026-1B427D"></span></a> </li>
                             </ul>
                         </div><!--//content-->
 
@@ -584,7 +656,7 @@
 
                 <aside class="skills aside section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Skills</h2>
+                        <h2 class="heading"><span data-i18n="en">Skills</span><span data-i18n="ja">スキル</span></h2>
                         <div class="content">
                             <!-- <p class="intro">
                                 Intro about your skills goes here. Keep the list lean and only show your primary skillset. You can always provide a link to your Linkedin or Github profile so people can get more info there.</p> -->
@@ -592,7 +664,7 @@
                             <div class="skillset">
                                
                                 <div class="item">
-                                    <h3 class="level-title">Python<span class="level-label" data-bs-toggle="tooltip" data-bs-placement="left" title="You can use the tooltip to explain more about your skill level..."><i class="fas fa-info-circle"></i>Expert</span></h3>
+                                    <h3 class="level-title">Python<span class="level-label" data-bs-toggle="tooltip" data-bs-placement="left" title="Primary language for research code, data pipelines and production services."><i class="fas fa-info-circle"></i><span data-i18n="en">Expert</span><span data-i18n="ja">エキスパート</span></span></h3>
 
                                     <div class="level-bar progress">
 									    <div class="progress-bar level-bar-inner" role="progressbar" style="width: 91%" aria-valuenow="93"  aria-valuemin="0" aria-valuemax="96"></div>
@@ -600,7 +672,7 @@
                                 </div><!--//item-->
                                 
                                 <div class="item">
-                                    <h3 class="level-title">Pytorch<span class="level-label" data-bs-toggle="tooltip" data-bs-placement="left" title="You can use the tooltip to explain more about your skill level..."><i class="fas fa-info-circle"></i>Pro</span></h3>
+                                    <h3 class="level-title">Pytorch<span class="level-label" data-bs-toggle="tooltip" data-bs-placement="left" title="Model implementation, distributed training and evaluation for computer-vision research."><i class="fas fa-info-circle"></i><span data-i18n="en">Pro</span><span data-i18n="ja">上級</span></span></h3>
 
                                     <div class="level-bar progress">
 									    <div class="progress-bar level-bar-inner" role="progressbar" style="width: 84%" aria-valuenow="84"  aria-valuemin="0" aria-valuemax="96"></div>
@@ -608,21 +680,21 @@
                                 </div><!--//item-->
                                 
                                 <div class="item">
-                                    <h3 class="level-title">Django<span class="level-label" data-bs-toggle="tooltip" data-bs-placement="left" title="You can use the tooltip to explain more about your skill level..."><i class="fas fa-info-circle"></i>Pro</span></h3>
+                                    <h3 class="level-title">Django<span class="level-label" data-bs-toggle="tooltip" data-bs-placement="left" title="Built and operated production web apps, including a service with 10,000+ users."><i class="fas fa-info-circle"></i><span data-i18n="en">Pro</span><span data-i18n="ja">上級</span></span></h3>
                                     <div class="level-bar progress">
 									    <div class="progress-bar level-bar-inner" role="progressbar" style="width: 78%" aria-valuenow="78"  aria-valuemin="0" aria-valuemax="96"></div>
 									</div><!--//level-bar-->                                   
                                 </div><!--//item-->
                                 
                                 <div class="item">
-                                    <h3 class="level-title">Linux<span class="level-label" data-bs-toggle="tooltip" data-placement="left" title="You can use the tooltip to explain more about your skill level..."><i class="fas fa-info-circle"></i>Pro</span></h3>
+                                    <h3 class="level-title">Linux<span class="level-label" data-bs-toggle="tooltip" data-bs-placement="left" title="Server provisioning, GPU cluster jobs and day-to-day shell tooling."><i class="fas fa-info-circle"></i><span data-i18n="en">Pro</span><span data-i18n="ja">上級</span></span></h3>
                                     <div class="level-bar progress">
 									    <div class="progress-bar level-bar-inner" role="progressbar" style="width: 74%" aria-valuenow="74"  aria-valuemin="0" aria-valuemax="96"></div>
 									</div><!--//level-bar-->                                  
                                 </div><!--//item-->
                                 
                                 <div class="item">
-                                    <h3 class="level-title">HTML, CSS &amp; Javascript<span class="level-label" data-bs-toggle="tooltip" data-bs-placement="left" title="You can use the tooltip to explain more about your skill level..."><i class="fas fa-info-circle"></i>Semipro</span></h3>
+                                    <h3 class="level-title">HTML, CSS &amp; Javascript<span class="level-label" data-bs-toggle="tooltip" data-bs-placement="left" title="Front-end work for personal apps, research demos and this site."><i class="fas fa-info-circle"></i><span data-i18n="en">Semipro</span><span data-i18n="ja">中級</span></span></h3>
                                     <div class="level-bar progress">
 									    <div class="progress-bar level-bar-inner" role="progressbar" style="width: 52%" aria-valuenow="52"  aria-valuemin="0" aria-valuemax="96"></div>
 									</div><!--//level-bar-->                                  
@@ -656,16 +728,16 @@
                             
                 <aside class="languages aside section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Languages</h2>
+                        <h2 class="heading"><span data-i18n="en">Languages</span><span data-i18n="ja">語学</span></h2>
                         <div class="content">
                             <ul class="list-unstyled">
                                 <li class="item">
-                                    <span class="title"><strong>Japanese:</strong></span>
-                                    <span class="level">Native Speaker <br class="visible-xs"/><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> </span>
+                                    <span class="title"><strong><span data-i18n="en">Japanese:</span><span data-i18n="ja">日本語：</span></strong></span>
+                                    <span class="level"><span data-i18n="en">Native Speaker</span><span data-i18n="ja">ネイティブ</span> <br class="visible-xs"/><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> </span>
                                 </li><!--//item-->
                                 <li class="item">
-                                    <span class="title"><strong>English:</strong></span>
-                                    <span class="level">Elementary <br class="visible-sm visible-xs"/><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star-half"></i></span>
+                                    <span class="title"><strong><span data-i18n="en">English:</span><span data-i18n="ja">英語：</span></strong></span>
+                                    <span class="level"><span data-i18n="en">Elementary</span><span data-i18n="ja">初級</span> <br class="visible-sm visible-xs"/><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star-half"></i></span>
                                 </li><!--//item-->
                             </ul>
                         </div><!--//content-->
@@ -771,6 +843,7 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.2/mustache.min.js"></script>
     <script type="text/javascript" src="assets/plugins/github-activity/src/github-activity.js"></script>
     <!-- custom js -->
+    <script type="text/javascript" src="assets/js/site-prefs.js"></script>
     <script type="text/javascript" src="assets/js/main.js"></script>            
 
 

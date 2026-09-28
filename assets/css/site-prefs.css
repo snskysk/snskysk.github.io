@@ -1,0 +1,140 @@
+/*!
+ * site-prefs.css - Language switching + preference control UI
+ * ------------------------------------------------------------
+ * This file is additive. It never changes the look of the page when
+ * data-lang="en" and data-design="classic" are active, apart from
+ * rendering the control panel in the header.
+ *
+ * Language model:
+ *   body[data-lang="en"|"ja"]  <- set by assets/js/site-prefs.js
+ *   Content is authored twice, side by side, marked with
+ *   data-i18n="en" / data-i18n="ja". Only the matching one is shown.
+ */
+
+/* ======= Language visibility ======= */
+body[data-lang="en"] [data-i18n="ja"],
+body[data-lang="ja"] [data-i18n="en"] {
+  display: none !important;
+}
+
+/* Japanese text gets a proper Japanese face in every design. */
+body[data-lang="ja"] {
+  font-family: 'Noto Sans JP', 'Lato', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, arial, sans-serif;
+}
+
+body[data-lang="ja"] h1,
+body[data-lang="ja"] h2,
+body[data-lang="ja"] h3,
+body[data-lang="ja"] h4,
+body[data-lang="ja"] h5,
+body[data-lang="ja"] h6 {
+  font-family: 'Montserrat', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+}
+
+/* Japanese has no inter-word spaces, so it needs a little more air. */
+body[data-lang="ja"] p,
+body[data-lang="ja"] li {
+  line-height: 1.85;
+}
+
+/* ======= Preference panel (language / dark mode / design) ======= */
+.site-prefs {
+  --sp-fg: #778492;
+  --sp-fg-strong: #49515a;
+  --sp-border: #d5dde2;
+  --sp-bg: rgba(255, 255, 255, 0.6);
+  --sp-active-bg: #54ba4e;
+  --sp-active-fg: #fff;
+  font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+  .site-prefs {
+    align-items: flex-end;
+  }
+}
+
+.site-prefs .prefs-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.site-prefs .prefs-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sp-fg);
+  white-space: nowrap;
+}
+
+.site-prefs .prefs-group {
+  display: inline-flex;
+  border: 1px solid var(--sp-border);
+  border-radius: 999px;
+  background: var(--sp-bg);
+  padding: 2px;
+  gap: 2px;
+}
+
+.site-prefs .prefs-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--sp-fg);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.site-prefs .prefs-btn:hover {
+  color: var(--sp-fg-strong);
+}
+
+.site-prefs .prefs-btn:focus-visible {
+  outline: 2px solid var(--sp-active-bg);
+  outline-offset: 1px;
+}
+
+.site-prefs .prefs-btn.is-active {
+  background: var(--sp-active-bg);
+  color: var(--sp-active-fg);
+}
+
+.site-prefs .prefs-btn.is-active:hover {
+  color: var(--sp-active-fg);
+}
+
+/* Keep the stock dark-mode switch tidy inside the panel. */
+.site-prefs .dark-mode-switch {
+  margin-bottom: 0;
+}
+
+.site-prefs .dark-mode-switch label {
+  color: var(--sp-fg);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+body[data-theme="dark"] .site-prefs {
+  --sp-fg: #a7b1bb;
+  --sp-fg-strong: #e6ebef;
+  --sp-border: #3a4149;
+  --sp-bg: rgba(255, 255, 255, 0.04);
+}
+
+/* The design picker is only useful while several designs are installed.
+   Delete the .prefs-row that holds it (in index.html) to hide it. */

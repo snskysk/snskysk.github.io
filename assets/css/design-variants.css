@@ -1,0 +1,571 @@
+/*!
+ * design-variants.css - Optional alternative looks for this site
+ * -------------------------------------------------------------
+ * HOW THIS WORKS
+ *   assets/css/styles.css is the original theme and is never modified.
+ *   This file only adds rules under  body[data-design="<name>"].
+ *
+ *   data-design="classic"   -> no rule in this file matches, so the page
+ *                              looks exactly as it always did.
+ *   data-design="editorial" -> academic-journal look: serif headings,
+ *                              paper background, hairline rules.
+ *   data-design="modern"    -> soft cards, larger type, emerald accent.
+ *   data-design="minimal"   -> flat, typographic, almost no chrome.
+ *
+ * TO DROP A VARIANT
+ *   Remove its <button data-set-design="..."> from index.html and delete
+ *   its blocks below. Nothing else references it.
+ *
+ * TO REVERT EVERYTHING
+ *   See DESIGN.md - it is three lines in index.html.
+ */
+
+/* =========================================================================
+   1. Variant palettes and type choices
+   ========================================================================= */
+
+/* ---------- editorial (light) ---------- */
+body[data-design="editorial"] {
+  --dv-bg: #efece4;
+  --dv-card: #fffefb;
+  --dv-card-border: #e0dacc;
+  --dv-radius: 3px;
+  --dv-shadow: none;
+  --dv-pad: 38px 42px;
+  --dv-text: #2f3237;
+  --dv-muted: #7d7a72;
+  --dv-heading: #24303d;
+  --dv-rule: #ddd6c6;
+  --dv-accent: #2c4a6e;
+  --dv-accent-strong: #1c3450;
+  --dv-accent-soft: #e6ecf3;
+  --dv-font-head: 'Noto Serif JP', Georgia, 'Times New Roman', serif;
+  --dv-font-body: 'Lato', 'Noto Sans JP', arial, sans-serif;
+  --dv-name-size: 40px;
+  --dv-heading-size: 19px;
+  --dv-heading-weight: 600;
+  --dv-heading-transform: none;
+  --dv-heading-spacing: 0.01em;
+  --dv-line-height: 1.8;
+  --dv-badge-radius: 2px;
+  --dv-header-bg: #fffefb;
+  --dv-header-accent: #24303d;
+  --dv-footer-bg: #24303d;
+  --dv-bar-track: #e4ded0;
+}
+
+/* ---------- editorial (dark) ---------- */
+body[data-theme="dark"][data-design="editorial"] {
+  --dv-bg: #14161a;
+  --dv-card: #1c1f24;
+  --dv-card-border: #2c3138;
+  --dv-text: #d9d5cc;
+  --dv-muted: #9a958a;
+  --dv-heading: #ece7dc;
+  --dv-rule: #2f343b;
+  --dv-accent: #8fb3d9;
+  --dv-accent-strong: #b3cded;
+  --dv-accent-soft: #232b35;
+  --dv-header-bg: #1a1d21;
+  --dv-header-accent: #8fb3d9;
+  --dv-footer-bg: #0f1114;
+  --dv-bar-track: #2b3038;
+}
+
+/* ---------- modern (light) ---------- */
+body[data-design="modern"] {
+  --dv-bg: #eef2f5;
+  --dv-card: #ffffff;
+  --dv-card-border: #e6ebf0;
+  --dv-radius: 18px;
+  --dv-shadow: 0 1px 2px rgba(16, 32, 48, 0.04), 0 10px 28px -12px rgba(16, 32, 48, 0.16);
+  --dv-pad: 34px 36px;
+  --dv-text: #3c4451;
+  --dv-muted: #8a95a3;
+  --dv-heading: #1d2733;
+  --dv-rule: #e6ebf0;
+  --dv-accent: #0f9d76;
+  --dv-accent-strong: #0b7d5e;
+  --dv-accent-soft: #e4f6f0;
+  --dv-font-head: 'Montserrat', 'Noto Sans JP', sans-serif;
+  --dv-font-body: 'Lato', 'Noto Sans JP', arial, sans-serif;
+  --dv-name-size: 44px;
+  --dv-heading-size: 20px;
+  --dv-heading-weight: 700;
+  --dv-heading-transform: none;
+  --dv-heading-spacing: -0.01em;
+  --dv-line-height: 1.75;
+  --dv-badge-radius: 999px;
+  --dv-header-bg: #ffffff;
+  --dv-header-accent: #0f9d76;
+  --dv-footer-bg: #1d2733;
+  --dv-bar-track: #e9eef2;
+}
+
+/* ---------- modern (dark) ---------- */
+body[data-theme="dark"][data-design="modern"] {
+  --dv-bg: #0e1218;
+  --dv-card: #171d25;
+  --dv-card-border: #242c37;
+  --dv-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -14px rgba(0, 0, 0, 0.7);
+  --dv-text: #c7d0da;
+  --dv-muted: #8794a3;
+  --dv-heading: #eef3f8;
+  --dv-rule: #242c37;
+  --dv-accent: #2fd3a3;
+  --dv-accent-strong: #5ae0b9;
+  --dv-accent-soft: #14312a;
+  --dv-header-bg: #141a21;
+  --dv-header-accent: #2fd3a3;
+  --dv-footer-bg: #080b0f;
+  --dv-bar-track: #222b35;
+}
+
+/* ---------- minimal (light) ---------- */
+body[data-design="minimal"] {
+  --dv-bg: #fbfbfa;
+  --dv-card: #ffffff;
+  --dv-card-border: #ececea;
+  --dv-radius: 0px;
+  --dv-shadow: none;
+  --dv-pad: 30px 0 34px;
+  --dv-text: #37393d;
+  --dv-muted: #8d8f94;
+  --dv-heading: #17181a;
+  --dv-rule: #e8e8e6;
+  --dv-accent: #1f6f4a;
+  --dv-accent-strong: #14512f;
+  --dv-accent-soft: #eef3f0;
+  --dv-font-head: 'Montserrat', 'Noto Sans JP', sans-serif;
+  --dv-font-body: 'Lato', 'Noto Sans JP', arial, sans-serif;
+  --dv-name-size: 34px;
+  --dv-heading-size: 12px;
+  --dv-heading-weight: 700;
+  --dv-heading-transform: uppercase;
+  --dv-heading-spacing: 0.16em;
+  --dv-line-height: 1.8;
+  --dv-badge-radius: 2px;
+  --dv-header-bg: #fbfbfa;
+  --dv-header-accent: #17181a;
+  --dv-footer-bg: #17181a;
+  --dv-bar-track: #eeeeec;
+}
+
+/* ---------- minimal (dark) ---------- */
+body[data-theme="dark"][data-design="minimal"] {
+  --dv-bg: #101113;
+  --dv-card: #101113;
+  --dv-card-border: #24262a;
+  --dv-text: #c8cace;
+  --dv-muted: #85888e;
+  --dv-heading: #f0f1f2;
+  --dv-rule: #24262a;
+  --dv-accent: #5ec48f;
+  --dv-accent-strong: #86d6ab;
+  --dv-accent-soft: #17251d;
+  --dv-header-bg: #101113;
+  --dv-header-accent: #f0f1f2;
+  --dv-footer-bg: #0a0b0c;
+  --dv-bar-track: #222428;
+}
+
+/* =========================================================================
+   2. Shared structure, driven by the variables above.
+   Applies to every variant except "classic".
+   ========================================================================= */
+body[data-design]:not([data-design="classic"]) {
+  background: var(--dv-bg);
+  color: var(--dv-text);
+  font-family: var(--dv-font-body);
+  line-height: var(--dv-line-height);
+}
+
+body[data-design]:not([data-design="classic"]) h1,
+body[data-design]:not([data-design="classic"]) h2,
+body[data-design]:not([data-design="classic"]) h3,
+body[data-design]:not([data-design="classic"]) h4,
+body[data-design]:not([data-design="classic"]) h5,
+body[data-design]:not([data-design="classic"]) h6 {
+  font-family: var(--dv-font-head);
+  color: var(--dv-heading);
+}
+
+body[data-design]:not([data-design="classic"]) a {
+  color: var(--dv-accent);
+}
+
+body[data-design]:not([data-design="classic"]) a:hover {
+  color: var(--dv-accent-strong);
+}
+
+/* ---- Header ---- */
+body[data-design]:not([data-design="classic"]) .header {
+  background: var(--dv-header-bg);
+  border-top: 4px solid var(--dv-header-accent);
+  padding: 40px 0 34px;
+}
+
+body[data-design]:not([data-design="classic"]) .header .profile-content .name {
+  font-family: var(--dv-font-head);
+  color: var(--dv-heading);
+  font-size: var(--dv-name-size);
+  letter-spacing: var(--dv-heading-spacing);
+  margin-top: 20px;
+}
+
+body[data-design]:not([data-design="classic"]) .header .profile-content .desc {
+  color: var(--dv-muted);
+  font-family: var(--dv-font-body);
+  font-size: 19px;
+}
+
+body[data-design]:not([data-design="classic"]) .header .profile-image {
+  border: 1px solid var(--dv-card-border);
+}
+
+/* ---- Cards ---- */
+body[data-design]:not([data-design="classic"]) .section .section-inner {
+  position: relative;
+  background: var(--dv-card);
+  border: 1px solid var(--dv-card-border);
+  padding: var(--dv-pad);
+}
+
+body[data-design]:not([data-design="classic"]) .section .section-inner.rounded {
+  border-radius: var(--dv-radius) !important;
+}
+
+body[data-design]:not([data-design="classic"]) .section .section-inner.shadow-sm {
+  box-shadow: var(--dv-shadow) !important;
+}
+
+body[data-design]:not([data-design="classic"]) .section {
+  margin-bottom: 26px;
+}
+
+/* ---- Section headings ---- */
+body[data-design]:not([data-design="classic"]) .section .heading {
+  color: var(--dv-heading);
+  font-size: var(--dv-heading-size);
+  font-weight: var(--dv-heading-weight);
+  text-transform: var(--dv-heading-transform);
+  letter-spacing: var(--dv-heading-spacing);
+  margin-bottom: 24px;
+}
+
+body[data-design]:not([data-design="classic"]) .aside .subheading {
+  color: var(--dv-heading);
+}
+
+/* ---- Item titles across sections ---- */
+body[data-design]:not([data-design="classic"]) .projects .item .title a,
+body[data-design]:not([data-design="classic"]) .latest .item .title a,
+body[data-design]:not([data-design="classic"]) .blog .item .title a {
+  color: var(--dv-heading);
+}
+
+body[data-design]:not([data-design="classic"]) .projects .item .title a:hover,
+body[data-design]:not([data-design="classic"]) .latest .item .title a:hover,
+body[data-design]:not([data-design="classic"]) .blog .item .title a:hover {
+  color: var(--dv-accent);
+}
+
+body[data-design]:not([data-design="classic"]) .projects .item .summary,
+body[data-design]:not([data-design="classic"]) .latest .featured .summary {
+  color: var(--dv-muted);
+}
+
+body[data-design]:not([data-design="classic"]) .experience .item .title,
+body[data-design]:not([data-design="classic"]) .education .item .title,
+body[data-design]:not([data-design="classic"]) .languages .item .title {
+  color: var(--dv-heading);
+}
+
+body[data-design]:not([data-design="classic"]) .experience .item .title .place,
+body[data-design]:not([data-design="classic"]) .experience .item .title .place a,
+body[data-design]:not([data-design="classic"]) .experience .item .title .year,
+body[data-design]:not([data-design="classic"]) .education .item .university,
+body[data-design]:not([data-design="classic"]) .education .item .university .year,
+body[data-design]:not([data-design="classic"]) .languages .item .level {
+  color: var(--dv-muted);
+}
+
+body[data-design]:not([data-design="classic"]) .list ul li a,
+body[data-design]:not([data-design="classic"]) .credits ul li a {
+  color: var(--dv-heading);
+}
+
+body[data-design]:not([data-design="classic"]) .list ul li a:hover,
+body[data-design]:not([data-design="classic"]) .credits ul li a:hover {
+  color: var(--dv-accent);
+}
+
+/* ---- Badges, buttons, bars, rules ---- */
+body[data-design]:not([data-design="classic"]) .badge-theme {
+  background: var(--dv-accent);
+  border-radius: var(--dv-badge-radius);
+  padding: 0.4em 0.75em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+body[data-design]:not([data-design="classic"]) a.btn-cta-secondary,
+body[data-design]:not([data-design="classic"]) .btn-cta-secondary,
+body[data-design]:not([data-design="classic"]) a.btn-cta-primary,
+body[data-design]:not([data-design="classic"]) .btn-cta-primary {
+  background: var(--dv-accent);
+  border-color: var(--dv-accent);
+  border-radius: var(--dv-badge-radius);
+  font-family: var(--dv-font-body);
+  letter-spacing: 0.04em;
+}
+
+body[data-design]:not([data-design="classic"]) a.btn-cta-secondary:hover,
+body[data-design]:not([data-design="classic"]) .btn-cta-secondary:hover,
+body[data-design]:not([data-design="classic"]) a.btn-cta-primary:hover,
+body[data-design]:not([data-design="classic"]) .btn-cta-primary:hover {
+  background: var(--dv-accent-strong);
+  border-color: var(--dv-accent-strong);
+}
+
+body[data-design]:not([data-design="classic"]) .skills .skillset .level-bar {
+  background: var(--dv-bar-track);
+  border-radius: var(--dv-badge-radius);
+  overflow: hidden;
+}
+
+body[data-design]:not([data-design="classic"]) .skills .skillset .level-bar-inner {
+  background: var(--dv-accent);
+}
+
+body[data-design]:not([data-design="classic"]) .skills .skillset .level-title .level-label,
+body[data-design]:not([data-design="classic"]) .info .svg-inline--fa {
+  color: var(--dv-muted);
+}
+
+body[data-design]:not([data-design="classic"]) .languages .item .svg-inline--fa,
+body[data-design]:not([data-design="classic"]) .testimonials .item .quote .svg-inline--fa {
+  color: var(--dv-accent);
+}
+
+body[data-design]:not([data-design="classic"]) hr,
+body[data-design]:not([data-design="classic"]) .divider {
+  border-top: 1px solid var(--dv-rule);
+  opacity: 1;
+}
+
+body[data-design]:not([data-design="classic"]) .latest .divider,
+body[data-design]:not([data-design="classic"]) .latest .featured {
+  margin-bottom: 40px;
+}
+
+body[data-design]:not([data-design="classic"]) .latest .has-ribbon .ribbon .text {
+  background-color: var(--dv-accent);
+}
+
+body[data-design]:not([data-design="classic"]) .latest .has-ribbon .ribbon .text:before,
+body[data-design]:not([data-design="classic"]) .latest .has-ribbon .ribbon .text:after {
+  border-top-color: var(--dv-accent-strong);
+}
+
+body[data-design]:not([data-design="classic"]) .footer {
+  background: var(--dv-footer-bg);
+}
+
+body[data-design]:not([data-design="classic"]) .testimonials .item .quote {
+  border-left-color: var(--dv-accent);
+  color: var(--dv-text);
+}
+
+/* =========================================================================
+   3. Per-variant flavour
+   ========================================================================= */
+
+/* ---------- editorial: journal rule under every heading ---------- */
+body[data-design="editorial"] .section .heading {
+  border-bottom: 1px solid var(--dv-rule);
+  padding-bottom: 12px;
+}
+
+body[data-design="editorial"] .primary .section .content {
+  max-width: 72ch;
+}
+
+body[data-design="editorial"] .projects .item .title,
+body[data-design="editorial"] .experience .item .title,
+body[data-design="editorial"] .education .item .title {
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+body[data-design="editorial"] .badge-theme {
+  background: transparent;
+  color: var(--dv-accent);
+  border: 1px solid var(--dv-accent);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+body[data-design="editorial"] a.btn-cta-secondary,
+body[data-design="editorial"] a.btn-cta-primary {
+  background: transparent;
+  color: var(--dv-accent);
+  border: 1px solid var(--dv-accent);
+  text-transform: none;
+}
+
+body[data-design="editorial"] a.btn-cta-secondary:hover,
+body[data-design="editorial"] a.btn-cta-primary:hover {
+  background: var(--dv-accent);
+  color: #fff;
+}
+
+body[data-design="editorial"] .education .item .university {
+  font-style: italic;
+}
+
+/* ---------- modern: accent hairline on each card, roomier rhythm ---------- */
+body[data-design="modern"] .primary .section .section-inner::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  border-radius: var(--dv-radius) var(--dv-radius) 0 0;
+  background: linear-gradient(90deg, var(--dv-accent), var(--dv-accent-soft));
+}
+
+body[data-design="modern"] .section .heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+body[data-design="modern"] .section .heading::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 6px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--dv-accent);
+}
+
+body[data-design="modern"] .projects .item .title,
+body[data-design="modern"] .experience .item .title,
+body[data-design="modern"] .education .item .title {
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+body[data-design="modern"] a.btn-cta-secondary,
+body[data-design="modern"] a.btn-cta-primary {
+  text-transform: none;
+  padding: 9px 20px;
+}
+
+body[data-design="modern"] .skills .skillset .level-bar,
+body[data-design="modern"] .skills .skillset .level-bar-inner {
+  height: 8px;
+  border-radius: 999px;
+}
+
+body[data-design="modern"] .skills .skillset .level-bar-inner {
+  background: linear-gradient(90deg, var(--dv-accent), var(--dv-accent-strong));
+}
+
+body[data-design="modern"] .latest .item img {
+  border-radius: 14px !important;
+}
+
+/* ---------- minimal: no cards at all, typography does the work ---------- */
+body[data-design="minimal"] .section .section-inner {
+  border: 0;
+  border-top: 1px solid var(--dv-card-border);
+  background: transparent;
+}
+
+body[data-design="minimal"] .primary > .section:first-child .section-inner,
+body[data-design="minimal"] .secondary > .aside:first-child .section-inner {
+  border-top: 0;
+  padding-top: 6px;
+}
+
+body[data-design="minimal"] .section .heading {
+  color: var(--dv-muted);
+  margin-bottom: 20px;
+}
+
+body[data-design="minimal"] .projects .item .title,
+body[data-design="minimal"] .experience .item .title,
+body[data-design="minimal"] .education .item .title {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+body[data-design="minimal"] .badge-theme {
+  background: var(--dv-accent-soft);
+  color: var(--dv-accent-strong);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+body[data-design="minimal"] a.btn-cta-secondary,
+body[data-design="minimal"] a.btn-cta-primary {
+  background: transparent;
+  color: var(--dv-accent);
+  border: 1px solid var(--dv-card-border);
+  text-transform: none;
+  font-weight: 700;
+}
+
+body[data-design="minimal"] a.btn-cta-secondary:hover,
+body[data-design="minimal"] a.btn-cta-primary:hover {
+  background: var(--dv-accent-soft);
+  border-color: var(--dv-accent);
+  color: var(--dv-accent-strong);
+}
+
+body[data-design="minimal"] .skills .skillset .level-bar,
+body[data-design="minimal"] .skills .skillset .level-bar-inner {
+  height: 4px;
+}
+
+body[data-design="minimal"] .latest .has-ribbon .ribbon {
+  display: none;
+}
+
+body[data-design="minimal"] .header {
+  border-top-width: 2px;
+}
+
+/* =========================================================================
+   4. Small shared refinements that help readability in every variant
+   ========================================================================= */
+body[data-design]:not([data-design="classic"]) .section .content ul {
+  padding-left: 1.2em;
+}
+
+body[data-design]:not([data-design="classic"]) .section .content li {
+  margin-bottom: 4px;
+}
+
+body[data-design]:not([data-design="classic"]) .info li {
+  word-break: break-word;
+}
+
+@media (max-width: 575.98px) {
+  body[data-design]:not([data-design="classic"]) .section .section-inner {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  body[data-design="minimal"] .section .section-inner {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  body[data-design]:not([data-design="classic"]) .header .profile-content .name {
+    font-size: 28px;
+  }
+}

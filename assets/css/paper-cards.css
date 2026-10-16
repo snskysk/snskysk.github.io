@@ -1,0 +1,278 @@
+/*!
+ * paper-cards.css - Illustrated publication list
+ * ----------------------------------------------
+ * Used by the "International Conference (refereed)" and "Preprints"
+ * sections. Each entry is a card: a teaser figure on the left, a venue
+ * chip, the title, the author list and a row of link chips on the right.
+ *
+ * This file is additive and self-contained. It styles only .paper-list
+ * and its children, so nothing else on the page is affected, and it
+ * works in all four designs in both light and dark mode:
+ *
+ *   - When a design variant is active, the --dv-* custom properties from
+ *     design-variants.css are defined and are used.
+ *   - In the Classic design they are not defined, so the var() fallbacks
+ *     below apply instead, with a separate set for dark mode.
+ *
+ * Load this AFTER design-variants.css.
+ */
+
+.paper-list {
+  --pc-border: var(--dv-card-border, #e3e8ec);
+  --pc-rule: var(--dv-rule, #e8ecef);
+  --pc-text: var(--dv-text, #434343);
+  --pc-muted: var(--dv-muted, #8a95a3);
+  --pc-heading: var(--dv-heading, #49515a);
+  --pc-accent: var(--dv-accent, #3aaa64);
+  --pc-accent-strong: var(--dv-accent-strong, #2d844e);
+  --pc-radius: 12px;
+  --pc-thumb-bg: #ffffff;
+  --pc-thumb-filter: none;
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+body[data-theme="dark"] .paper-list {
+  --pc-border: var(--dv-card-border, #2b3138);
+  --pc-rule: var(--dv-rule, #2b3138);
+  --pc-text: var(--dv-text, #c7d0da);
+  --pc-muted: var(--dv-muted, #97a0a9);
+  --pc-heading: var(--dv-heading, #e6ebef);
+  --pc-accent: var(--dv-accent, #53c47d);
+  --pc-accent-strong: var(--dv-accent-strong, #7ad69b);
+  /* A pure-white figure is harsh against a dark card, so soften it a little
+     and bring it back to full brightness when the card is hovered. */
+  --pc-thumb-filter: brightness(0.9);
+}
+
+/* ---- Card ---- */
+.paper-list .paper-card {
+  display: grid;
+  grid-template-columns: 252px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.paper-list .paper-card + .paper-card {
+  border-top: 1px solid var(--pc-rule);
+  padding-top: 26px;
+}
+
+/* ---- Teaser figure ---- */
+.paper-list .paper-thumb {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--pc-border);
+  border-radius: var(--pc-radius);
+  background: var(--pc-thumb-bg);
+  aspect-ratio: 16 / 10;
+  text-decoration: none;
+}
+
+.paper-list .paper-thumb:hover {
+  text-decoration: none;
+  border-color: var(--pc-accent);
+}
+
+.paper-list .paper-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
+  filter: var(--pc-thumb-filter);
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.paper-list .paper-thumb:hover img {
+  transform: scale(1.04);
+  filter: none;
+}
+
+/* ---- Body ---- */
+.paper-list .paper-body {
+  min-width: 0;
+}
+
+.paper-list .paper-venue {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.paper-list .venue-chip {
+  --venue-color: #4a5560;
+  display: inline-block;
+  background: var(--venue-color);
+  color: #fff;
+  font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  padding: 6px 11px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.paper-list .venue-note {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--pc-muted);
+  border: 1px solid var(--pc-border);
+  border-radius: 999px;
+  padding: 5px 10px;
+  line-height: 1;
+}
+
+.paper-list .venue-full {
+  font-size: 13px;
+  color: var(--pc-muted);
+  line-height: 1.4;
+}
+
+.paper-list .paper-title {
+  font-size: 17px;
+  line-height: 1.45;
+  margin: 0 0 7px;
+}
+
+body .paper-list .paper-title a {
+  color: var(--pc-heading);
+  text-decoration: none;
+}
+
+body .paper-list .paper-title a:hover {
+  color: var(--pc-accent);
+  text-decoration: underline;
+}
+
+.paper-list .paper-authors {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--pc-muted);
+  margin: 0 0 12px;
+}
+
+.paper-list .paper-authors .me {
+  color: var(--pc-text);
+  font-weight: 700;
+}
+
+.paper-list .paper-note {
+  font-size: 12.5px;
+  color: var(--pc-muted);
+}
+
+/* ---- Link chips ---- */
+.paper-list .paper-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+
+body .paper-list .paper-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 7px 13px;
+  border: 1px solid var(--pc-border);
+  border-radius: 999px;
+  color: var(--pc-heading);
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+body .paper-list .paper-links a:hover {
+  background: var(--pc-accent);
+  border-color: var(--pc-accent);
+  color: #fff;
+  text-decoration: none;
+}
+
+.paper-list .paper-links a .svg-inline--fa {
+  font-size: 11px;
+  margin: 0;
+  position: static;
+}
+
+/* The accents are bright in dark mode, so a dark label reads better on them. */
+body[data-theme="dark"] .paper-list .paper-links a:hover {
+  color: var(--dv-btn-fg, #14181c);
+}
+
+/* ---- Per-venue colours ---- */
+.paper-list .venue-cvpr    { --venue-color: #1b427d; }
+.paper-list .venue-iccv    { --venue-color: #7b2d8e; }
+.paper-list .venue-neurips { --venue-color: #262377; }
+.paper-list .venue-wacv    { --venue-color: #0f6f80; }
+.paper-list .venue-corl    { --venue-color: #a9561c; }
+
+body[data-theme="dark"] .paper-list .venue-cvpr    { --venue-color: #3f6ab4; }
+body[data-theme="dark"] .paper-list .venue-iccv    { --venue-color: #a855c0; }
+body[data-theme="dark"] .paper-list .venue-neurips { --venue-color: #5a56c9; }
+body[data-theme="dark"] .paper-list .venue-wacv    { --venue-color: #1d9bb1; }
+body[data-theme="dark"] .paper-list .venue-corl    { --venue-color: #d2823f; }
+
+/* ---- Design-variant touches ---- */
+/* Minimal strips the chrome: square corners, no card borders. */
+body[data-design="minimal"] .paper-list {
+  --pc-radius: 0px;
+}
+
+body[data-design="minimal"] .paper-list .venue-chip,
+body[data-design="minimal"] .paper-list .venue-note,
+body[data-design="minimal"] .paper-list .paper-links a {
+  border-radius: 2px;
+}
+
+/* Editorial keeps its squared, printed feel. */
+body[data-design="editorial"] .paper-list {
+  --pc-radius: 3px;
+}
+
+body[data-design="editorial"] .paper-list .venue-chip,
+body[data-design="editorial"] .paper-list .venue-note,
+body[data-design="editorial"] .paper-list .paper-links a {
+  border-radius: 2px;
+}
+
+/* Editorial limits the body measure elsewhere; the cards need the full width. */
+body[data-design="editorial"] .primary .section .content .paper-list {
+  max-width: none;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 991.98px) {
+  .paper-list .paper-card {
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 18px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .paper-list .paper-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .paper-list .paper-thumb {
+    aspect-ratio: 16 / 9;
+  }
+  .paper-list .paper-title {
+    font-size: 16px;
+  }
+}

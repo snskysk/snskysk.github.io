@@ -401,7 +401,7 @@ body[data-design="editorial"] .section .heading {
   padding-bottom: 12px;
 }
 
-body[data-design="editorial"] .primary .section .content {
+body[data-design="editorial"] .primary .section .content:not(.paper-content) {
   max-width: 72ch;
 }
 
@@ -558,11 +558,11 @@ body[data-design="minimal"] .header {
 /* =========================================================================
    4. Small shared refinements that help readability in every variant
    ========================================================================= */
-body[data-design]:not([data-design="classic"]) .section .content ul {
+body[data-design]:not([data-design="classic"]) .section .content ul:not(.paper-list) {
   padding-left: 1.2em;
 }
 
-body[data-design]:not([data-design="classic"]) .section .content li {
+body[data-design]:not([data-design="classic"]) .section .content li:not(.paper-card) {
   margin-bottom: 4px;
 }
 

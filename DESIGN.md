@@ -18,6 +18,7 @@ or dark mode. The choice is remembered per browser.
 | `assets/css/styles.css` | **The original theme. Not modified.** |
 | `assets/css/site-prefs.css` | Language visibility rules + the control panel |
 | `assets/css/design-variants.css` | The three alternative designs |
+| `assets/css/paper-cards.css` | The illustrated publication list |
 | `assets/js/site-prefs.js` | Wires up the buttons, remembers the choice |
 | inline `<script>` right after `<body>` | Applies the stored choice before the first paint |
 
@@ -103,9 +104,47 @@ accent-coloured label: accent text on an accent background.
 For the same reason the generic link colour is scoped as `a:not(:where(.btn))`,
 so it cannot capture buttons and hide their labels.
 
+That same generic rule, at 0-2-2, also outranks a plain `.paper-list .paper-title a`
+at 0-2-1, which is why those rules in `paper-cards.css` are written as
+`body .paper-list .paper-title a`: the extra element lifts them to 0-2-2 and the
+later file wins the tie. `design-variants.css` likewise excludes the cards from
+its prose-list tweaks (`ul:not(.paper-list)`, `li:not(.paper-card)`) and from
+Editorial's measure limit (`.content:not(.paper-content)`).
+
 If you change the button or badge rules, check the result in all four designs in
 both light and dark mode. The label disappearing into its own background is the
 symptom to look for.
+
+## Publication cards
+
+The two publication sections use `.paper-list` from
+`assets/css/paper-cards.css`. One entry looks like this:
+
+```html
+<li class="paper-card">
+  <a class="paper-thumb" href="<arxiv abs>" target="_blank">
+    <img src="assets/images/papers/<slug>.jpg" alt="..." loading="lazy" />
+  </a>
+  <div class="paper-body">
+    <div class="paper-venue">
+      <span class="venue-chip venue-neurips">NeurIPS 2026</span>
+      <span class="venue-note">Under review</span>   <!-- preprints only -->
+      <span class="venue-full">...EN/JA...</span>
+    </div>
+    <h3 class="paper-title"><a href="...">Title</a></h3>
+    <p class="paper-authors">A, <span class="me">Shunsuke Yasuki</span>, B</p>
+    <p class="paper-links"><a href="..."><i class="fas fa-file-pdf"></i>PDF</a></p>
+  </div>
+</li>
+```
+
+`.me` bolds your own name. Venue colours are set by the `venue-*` class; add a
+new one next to `venue-cvpr` and friends in `paper-cards.css`.
+
+Teaser images live in `assets/images/papers/`, 1080px wide JPEG, sourced from
+each paper's own figure (a project page, a repo README, or cropped out of the
+arXiv PDF). They are displayed with `object-fit: contain` on a white panel, so
+any aspect ratio is safe and no figure gets cropped.
 
 ## Known gaps
 

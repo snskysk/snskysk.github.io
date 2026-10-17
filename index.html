@@ -46,8 +46,25 @@
     (function () {
       var b = document.body;
       var get = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
+
+      /* Pick a language for a first-time visitor from the browser's own
+         preference list, which is what it sends as Accept-Language. The list is
+         ordered, so the first entry that is Japanese or English wins; anything
+         else falls through to English. A visitor who has clicked EN or 日本語
+         has that stored, and the stored choice always takes precedence. */
+      var preferred = function () {
+        var list = navigator.languages;
+        if (!list || !list.length) { list = [navigator.language || navigator.userLanguage || '']; }
+        for (var i = 0; i < list.length; i++) {
+          var tag = String(list[i]).toLowerCase();
+          if (tag === 'ja' || tag.indexOf('ja-') === 0) { return 'ja'; }
+          if (tag === 'en' || tag.indexOf('en-') === 0) { return 'en'; }
+        }
+        return 'en';
+      };
+
       var lang = get('siteLang');
-      if (lang !== 'en' && lang !== 'ja') { lang = 'en'; }
+      if (lang !== 'en' && lang !== 'ja') { lang = preferred(); }
       var design = get('siteDesign') || 'modern';
       if (['classic', 'editorial', 'modern', 'minimal'].indexOf(design) === -1) { design = 'modern'; }
       b.setAttribute('data-lang', lang);

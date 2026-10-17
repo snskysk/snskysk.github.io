@@ -11,6 +11,26 @@ This page has two switches in the header, next to Dark Mode:
 All three are independent, so any language works with any design in either light
 or dark mode. The choice is remembered per browser.
 
+## Which language a visitor sees first
+
+1. If they have clicked `EN` or `日本語` on this site before, that choice wins.
+   It is the only thing written to `localStorage.siteLang`.
+2. Otherwise the boot snippet reads `navigator.languages`, the ordered list the
+   browser also sends as its `Accept-Language` header, and takes the first entry
+   that is Japanese (`ja`, `ja-JP`, ...) or English (`en`, `en-GB`, ...).
+   So `["ja-JP", "en-US"]` gets Japanese and `["en-GB", "ja"]` gets English.
+3. Anything else, including a browser that reports no language, gets English.
+
+The detected language is deliberately **not** stored. Only an explicit click is.
+That way the site keeps following the browser setting if it ever changes, and a
+visitor who overrides it is never overridden back.
+
+This keys off the browser's language preference, not the visitor's location.
+Telling where someone is would need a geo-IP lookup, which a static GitHub Pages
+site cannot do without calling a third-party API on every page load. The browser
+preference is also the better signal: a Japanese speaker abroad still wants
+Japanese, and an English speaker in Tokyo still wants English.
+
 ## Files
 
 | File | Role |

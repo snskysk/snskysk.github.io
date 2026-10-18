@@ -24,6 +24,7 @@
   --xp-accent: var(--dv-accent, #3aaa64);
   --xp-radius: 10px;
   --xp-tile-bg: #ffffff;
+  --xp-tile: 54px;
 }
 
 body[data-theme="dark"] .job-list,
@@ -34,7 +35,6 @@ body[data-theme="dark"] .now-card {
   --xp-muted: var(--dv-muted, #97a0a9);
   --xp-heading: var(--dv-heading, #e6ebef);
   --xp-accent: var(--dv-accent, #53c47d);
-  --xp-tile-bg: #f3f5f7;
 }
 
 /* =========================================================================
@@ -45,8 +45,8 @@ body[data-theme="dark"] .now-card {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
+  width: var(--xp-tile);
+  height: var(--xp-tile);
   border: 1px solid var(--xp-border);
   border-radius: var(--xp-radius);
   background: var(--xp-tile-bg);
@@ -54,8 +54,8 @@ body[data-theme="dark"] .now-card {
 }
 
 .org-mark img {
-  max-width: 68%;
-  max-height: 68%;
+  max-width: 88%;
+  max-height: 88%;
   object-fit: contain;
 }
 
@@ -69,17 +69,12 @@ body[data-theme="dark"] .now-card {
   line-height: 1;
 }
 
-.org-aist .org-initials { --org-color: #0b6e5f; }
-.org-utokyo .org-initials { --org-color: #1b4f72; }
 .org-neurips .org-initials { --org-color: #262377; }
 .org-jsai .org-initials { --org-color: #8a4a1f; }
 
-/* The longer monograms need to fit the same tile. */
-.org-neurips .org-initials { font-size: 9.5px; }
-.org-utokyo .org-initials { font-size: 10px; }
+/* The longer monogram needs to fit the same tile. */
+.org-neurips .org-initials { font-size: 10px; }
 
-body[data-theme="dark"] .org-aist .org-initials { --org-color: #2f9c87; }
-body[data-theme="dark"] .org-utokyo .org-initials { --org-color: #4d87bb; }
 body[data-theme="dark"] .org-neurips .org-initials { --org-color: #5a56c9; }
 body[data-theme="dark"] .org-jsai .org-initials { --org-color: #c07c42; }
 
@@ -97,7 +92,7 @@ body[data-theme="dark"] .org-jsai .org-initials { --org-color: #c07c42; }
 
 .job-list .job-item {
   display: grid;
-  grid-template-columns: 46px minmax(0, 1fr);
+  grid-template-columns: var(--xp-tile) minmax(0, 1fr);
   gap: 16px;
   align-items: start;
 }
@@ -259,13 +254,12 @@ body[data-design="editorial"] .primary .section .content:has(.job-list) {
    Responsive
    ========================================================================= */
 @media (max-width: 575.98px) {
-  .job-list .job-item {
-    grid-template-columns: 38px minmax(0, 1fr);
-    gap: 12px;
+  .job-list .job-item,
+  .now-card {
+    --xp-tile: 44px;
   }
-  .org-mark {
-    width: 38px;
-    height: 38px;
+  .job-list .job-item {
+    gap: 12px;
   }
   .org-mark .org-initials {
     font-size: 9.5px;

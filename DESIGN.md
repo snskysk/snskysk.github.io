@@ -199,9 +199,19 @@ These three sections share `.job-list` from `assets/css/experience.css`:
 ```
 
 An organisation with a logo file uses `<img>`; one without uses a monogram
-tinted by an `org-*` class. Add a new colour next to `.org-aist` in
-`experience.css`. Institutional logos are deliberately not bundled: the
-monograms avoid any trademark question and stay crisp in both colour schemes.
+tinted by an `org-*` class (`.org-neurips`, `.org-jsai`). Add a new colour next
+to those in `experience.css`.
+
+Logo files live in `assets/images/projects/`. `utokyo.png` and `aist.png` were
+trimmed of their surrounding whitespace before being added, since the tile is
+only ~54px and padding wastes most of it. The AIST source is a 5.4:1 lockup
+(symbol plus 産総研) that would render about 8px tall in the tile, so only the
+symbol is used; the full name is already in the text beside it.
+
+To add another logo: crop the uniform border away by taking the bounding box of
+everything that differs from the top-left pixel, flatten near-white pixels to
+pure white so JPEG speckle does not show against the tile, and save at about
+four times the tile size.
 
 The sidebar "Current position" card uses `.now-card` from the same file.
 

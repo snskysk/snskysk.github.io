@@ -1,0 +1,273 @@
+/*!
+ * experience.css - Work history list and the "Current position" card
+ * ------------------------------------------------------------------
+ * Additive and self-contained, like paper-cards.css. It styles only
+ * .job-list and .now-card, and reads the --dv-* custom properties from
+ * design-variants.css when a design variant is active, falling back to
+ * its own palette in the Classic design with a separate set for dark mode.
+ *
+ * Load this AFTER design-variants.css.
+ *
+ * Organisation marks: an entry shows either a logo image or, where there
+ * is no logo file, a short monogram tinted with the org's colour. Both
+ * sit in the same white tile so the column stays even. Add a new colour
+ * next to .org-aist and .org-utokyo below.
+ */
+
+.job-list,
+.now-card {
+  --xp-border: var(--dv-card-border, #e3e8ec);
+  --xp-rule: var(--dv-rule, #e8ecef);
+  --xp-text: var(--dv-text, #434343);
+  --xp-muted: var(--dv-muted, #8a95a3);
+  --xp-heading: var(--dv-heading, #49515a);
+  --xp-accent: var(--dv-accent, #3aaa64);
+  --xp-radius: 10px;
+  --xp-tile-bg: #ffffff;
+}
+
+body[data-theme="dark"] .job-list,
+body[data-theme="dark"] .now-card {
+  --xp-border: var(--dv-card-border, #2b3138);
+  --xp-rule: var(--dv-rule, #2b3138);
+  --xp-text: var(--dv-text, #c7d0da);
+  --xp-muted: var(--dv-muted, #97a0a9);
+  --xp-heading: var(--dv-heading, #e6ebef);
+  --xp-accent: var(--dv-accent, #53c47d);
+  --xp-tile-bg: #f3f5f7;
+}
+
+/* =========================================================================
+   Organisation mark
+   ========================================================================= */
+.org-mark {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--xp-border);
+  border-radius: var(--xp-radius);
+  background: var(--xp-tile-bg);
+  overflow: hidden;
+}
+
+.org-mark img {
+  max-width: 68%;
+  max-height: 68%;
+  object-fit: contain;
+}
+
+.org-mark .org-initials {
+  --org-color: #4a5560;
+  font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--org-color);
+  line-height: 1;
+}
+
+.org-aist .org-initials { --org-color: #0b6e5f; }
+.org-utokyo .org-initials { --org-color: #1b4f72; }
+.org-neurips .org-initials { --org-color: #262377; }
+.org-jsai .org-initials { --org-color: #8a4a1f; }
+
+/* The longer monograms need to fit the same tile. */
+.org-neurips .org-initials { font-size: 9.5px; }
+.org-utokyo .org-initials { font-size: 10px; }
+
+body[data-theme="dark"] .org-aist .org-initials { --org-color: #2f9c87; }
+body[data-theme="dark"] .org-utokyo .org-initials { --org-color: #4d87bb; }
+body[data-theme="dark"] .org-neurips .org-initials { --org-color: #5a56c9; }
+body[data-theme="dark"] .org-jsai .org-initials { --org-color: #c07c42; }
+
+/* =========================================================================
+   Work history
+   ========================================================================= */
+.job-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.job-list .job-item {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.job-list .job-item + .job-item {
+  border-top: 1px solid var(--xp-rule);
+  padding-top: 24px;
+}
+
+.job-list .job-body {
+  min-width: 0;
+}
+
+body .job-list .job-role {
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--xp-heading);
+  margin: 0 0 4px;
+}
+
+.job-list .job-meta {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--xp-muted);
+  margin: 0 0 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+.job-list .job-year {
+  white-space: nowrap;
+}
+
+.job-list .job-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--xp-text);
+  margin: 0 0 8px;
+}
+
+.job-list .job-points {
+  margin: 0;
+  padding-left: 1.1em;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--xp-text);
+}
+
+.job-list .job-points li {
+  margin-bottom: 3px;
+}
+
+/* A published result from the role, set apart from the duties above it. */
+.job-list .job-output {
+  margin: 10px 0 0;
+  padding: 10px 13px;
+  border-left: 3px solid var(--xp-accent);
+  background: var(--dv-accent-soft, rgba(58, 170, 100, 0.07));
+  border-radius: 0 var(--xp-radius) var(--xp-radius) 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--xp-text);
+}
+
+.job-list .job-output .job-output-label {
+  display: block;
+  font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--xp-muted);
+  margin-bottom: 3px;
+}
+
+/* =========================================================================
+   Current position card (sidebar)
+   ========================================================================= */
+.now-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.now-card .now-body {
+  min-width: 0;
+}
+
+body .now-card .now-role {
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--xp-heading);
+  margin: 0 0 4px;
+}
+
+.now-card .now-org {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--xp-muted);
+  margin: 0 0 2px;
+}
+
+.now-card .now-year {
+  font-size: 12.5px;
+  color: var(--xp-muted);
+  margin: 0 0 9px;
+}
+
+.now-card .now-desc {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--xp-text);
+  margin: 0 0 10px;
+}
+
+.now-card .now-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.now-card .now-tags li {
+  font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 6px 11px;
+  border: 1px solid var(--xp-border);
+  border-radius: 999px;
+  color: var(--xp-muted);
+  margin: 0;
+}
+
+/* =========================================================================
+   Design-variant touches
+   ========================================================================= */
+body[data-design="minimal"] .job-list,
+body[data-design="minimal"] .now-card,
+body[data-design="editorial"] .job-list,
+body[data-design="editorial"] .now-card {
+  --xp-radius: 2px;
+}
+
+body[data-design="minimal"] .now-card .now-tags li,
+body[data-design="editorial"] .now-card .now-tags li {
+  border-radius: 2px;
+}
+
+/* Editorial limits the body measure; the work list needs the full width. */
+body[data-design="editorial"] .primary .section .content:has(.job-list) {
+  max-width: none;
+}
+
+/* =========================================================================
+   Responsive
+   ========================================================================= */
+@media (max-width: 575.98px) {
+  .job-list .job-item {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .org-mark {
+    width: 38px;
+    height: 38px;
+  }
+  .org-mark .org-initials {
+    font-size: 9.5px;
+  }
+}

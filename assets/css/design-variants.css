@@ -558,11 +558,11 @@ body[data-design="minimal"] .header {
 /* =========================================================================
    4. Small shared refinements that help readability in every variant
    ========================================================================= */
-body[data-design]:not([data-design="classic"]) .section .content ul:not(.paper-list) {
+body[data-design]:not([data-design="classic"]) .section .content ul:not(.paper-list, .job-list, .now-tags) {
   padding-left: 1.2em;
 }
 
-body[data-design]:not([data-design="classic"]) .section .content li:not(.paper-card) {
+body[data-design]:not([data-design="classic"]) .section .content li:not(.paper-card, .job-item) {
   margin-bottom: 4px;
 }
 

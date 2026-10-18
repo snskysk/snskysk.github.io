@@ -39,6 +39,7 @@ Japanese, and an English speaker in Tokyo still wants English.
 | `assets/css/site-prefs.css` | Language visibility rules + the control panel |
 | `assets/css/design-variants.css` | The three alternative designs |
 | `assets/css/paper-cards.css` | The illustrated publication list |
+| `assets/css/experience.css` | Work history list and the Current-position card |
 | `assets/js/site-prefs.js` | Wires up the buttons, remembers the choice |
 | inline `<script>` right after `<body>` | Applies the stored choice before the first paint |
 
@@ -177,6 +178,37 @@ figure gets cropped. Two kinds are in use:
 To re-encode a GIF: keep every second or third frame, folding the dropped
 frames' durations into the one kept so the loop keeps its length, resize to
 480px wide, then `Image.save(..., save_all=True, quality=50-58, method=6)`.
+
+## Work history, awards and academic service
+
+These three sections share `.job-list` from `assets/css/experience.css`:
+
+```html
+<li class="job-item">
+  <span class="org-mark"><img src="assets/images/projects/sakiku.png" alt="sAkIku" /></span>
+  <!-- or, where there is no logo file: -->
+  <span class="org-mark org-aist"><span class="org-initials">AIST</span></span>
+  <div class="job-body">
+    <h3 class="job-role">...EN/JA...</h3>
+    <p class="job-meta"><span class="job-org">...</span><span class="job-year">...</span></p>
+    <p class="job-desc">...</p>
+    <ul class="job-points"><li>...</li></ul>          <!-- optional -->
+    <p class="job-output"><span class="job-output-label">成果</span>...</p>  <!-- optional -->
+  </div>
+</li>
+```
+
+An organisation with a logo file uses `<img>`; one without uses a monogram
+tinted by an `org-*` class. Add a new colour next to `.org-aist` in
+`experience.css`. Institutional logos are deliberately not bundled: the
+monograms avoid any trademark question and stay crisp in both colour schemes.
+
+The sidebar "Current position" card uses `.now-card` from the same file.
+
+Note for whoever edits `design-variants.css`: its prose-list rules exclude these
+lists by name, as `ul:not(.paper-list, .job-list, .now-tags)` and
+`li:not(.paper-card, .job-item)`. A new card list has to be added there too, or
+it picks up a 1.2em indent in every non-Classic design.
 
 ## Known gaps
 

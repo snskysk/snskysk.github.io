@@ -161,14 +161,27 @@ The two publication sections use `.paper-list` from
 `.me` bolds your own name. Venue colours are set by the `venue-*` class; add a
 new one next to `venue-cvpr` and friends in `paper-cards.css`.
 
-Teaser images live in `assets/images/papers/`, 1080px wide JPEG, sourced from
-each paper's own figure (a project page, a repo README, or cropped out of the
-arXiv PDF). They are displayed with `object-fit: contain` on a white panel, so
-any aspect ratio is safe and no figure gets cropped.
+Thumbnails live in `assets/images/papers/` and are shown with
+`object-fit: contain` on a white panel, so any aspect ratio is safe and no
+figure gets cropped. Two kinds are in use:
+
+- **Animated `.webp`** for CVPR, ICCV and NeurIPS, re-encoded from the Taki Lab
+  research-page GIFs (視覚的な解釈可能性 / 3D言語フィールド /
+  イベントベースビジョンのための深層学習). The originals total 18 MB; thinning
+  the frames, resizing to 480px and encoding as animated WebP brings all three
+  down to about 770 KB. A browser too old for animated WebP (Safari 15 and
+  earlier) shows the first frame, which is still a sensible picture.
+- **1080px `.jpg`** for the rest, taken from the paper's own figure, cropped out
+  of the arXiv PDF.
+
+To re-encode a GIF: keep every second or third frame, folding the dropped
+frames' durations into the one kept so the loop keeps its length, resize to
+480px wide, then `Image.save(..., save_all=True, quality=50-58, method=6)`.
 
 ## Known gaps
 
 - The skill tooltips (`title="..."`) are English only; the `title` attribute
   cannot hold two languages without re-initialising the Bootstrap tooltip.
-- The undergraduate supervisor's name is left in romaji in the Japanese view
-  (`Noritake Sunaga 先生`) because the kanji spelling was not confirmed.
+- The Japanese body copy is in plain form (常体) in Career Profile and
+  Academia, but the remaining sections (Work Experience, Awards, Academic
+  Service, Latest Works, News, Apps) are still in polite form (です・ます).
